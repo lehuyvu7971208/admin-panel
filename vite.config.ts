@@ -1,7 +1,6 @@
 // Plugins
 import vue from '@vitejs/plugin-vue';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
-import ViteFonts from 'unplugin-fonts/vite';
 
 // Utilities
 import { defineConfig } from 'vite';
@@ -18,16 +17,10 @@ export default defineConfig({
       autoImport: true,
       styles: { configFile: 'src/scss/variables.scss' },
     }),
-    ViteFonts({
-      google: {
-        families: [{
-          name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
-        }],
-      },
-    }),
   ],
+
   define: { 'process.env': {} },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -43,7 +36,13 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
+    port: 8080,
   },
-  envPrefix: 'PUBLIC'
+
+  envPrefix: 'PUBLIC',
+
+  optimizeDeps: {
+    exclude: ['vuetify'],
+    entries: ['./src/**/*.vue']
+  }
 });
