@@ -1,7 +1,7 @@
 <script setup>
 // Components
-import NavItem from '../NavItem/Index.vue';
-import Icon from '../../vertical-sidebar/Icon.vue';
+import NavItem from '../NavItem/NavItem.vue';
+import Icon from '../../VerticalSidebar/Icon.vue';
 
 defineProps({ item: Object, level: Number });
 </script>

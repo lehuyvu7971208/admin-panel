@@ -11,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "home" */ '@/layouts/Home/Home.vue'),
+    component: () => import(/* webpackChunkName: "layout" */ '@/layouts/Full/FullLayout.vue'),
     children: [
       {
         path: '/',
@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Users.vue'),
       }
     ]
+  },
+
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('@/views/Error/404.vue')
   },
 ];
 

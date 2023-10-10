@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 
 export type ConfigProps = {
-  inputBg:string;
   boxed: boolean;
+  inputBg: string;
   actTheme: string;
   sidebarDrawer: any;
   borderCard: boolean;
@@ -61,7 +61,7 @@ export const useCustomizerStore = defineStore({
       this.actTheme = payload;
     },
 
-    setCardBorder(payload: any){
+    setCardBorder(payload: any) {
       this.borderCard = payload;
     }
   },

@@ -9,11 +9,11 @@ import { Menu2Icon, ShoppingCartIcon } from 'vue-tabler-icons';
 
 // Components
 import Logo from '../logo/Logo.vue';
-import ProfileDD from '../vertical-header/ProfileDD.vue';
-import Searchbar from '../vertical-header/Searchbar.vue';
-import LanguageDD from '../vertical-header/LanguageDD.vue';
-import NotificationDD from '../vertical-header/NotificationDD.vue';
-import RightMobileSidebar from '../vertical-header/RightMobileSidebar.vue';
+import ProfileDD from '../VerticalHeader/ProfileDD.vue';
+import Searchbar from '../VerticalHeader/Searchbar.vue';
+import LanguageDD from '../VerticalHeader/LanguageDD.vue';
+import NotificationDD from '../VerticalHeader/NotificationDD.vue';
+import RightMobileSidebar from '../VerticalHeader/RightMobileSidebar.vue';
 
 const customizer = useCustomizerStore();
 

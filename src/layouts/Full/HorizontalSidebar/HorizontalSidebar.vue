@@ -8,9 +8,9 @@ import HorizontalItems from './horizontalItems';
 import { useCustomizerStore } from '@/store/customizer';
 
 // Components
-import NavItem from './NavItem/Index.vue';
-import NavCollapse from './NavCollapse/Index.vue';
-import VerticalSidebar from '../vertical-sidebar/VerticalSidebar.vue';
+import NavItem from './NavItem/NavItem.vue';
+import NavCollapse from './NavCollapse/NavCollapse.vue';
+import VerticalSidebar from '../VerticalSidebar/VerticalSidebar.vue';
 
 const customizer = useCustomizerStore();
 const sidebarMenu = shallowRef(HorizontalItems);

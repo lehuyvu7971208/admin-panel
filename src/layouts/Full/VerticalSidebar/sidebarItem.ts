@@ -1,11 +1,5 @@
 import {
-  MenuIcon,
-  StarIcon,
-  AwardIcon,
-  CircleIcon,
-  CircleOffIcon,
-  MoodSmileIcon,
-  BrandChromeIcon,
+  BoxIcon,
 } from 'vue-tabler-icons';
 
 export interface menu {
@@ -25,83 +19,15 @@ export interface menu {
 }
 
 const sidebarItem: menu[] = [
-  { header: 'Starterkit' },
+  { header: 'Apps' },
   {
-      title: 'Sample Page',
-      icon: BrandChromeIcon,
-      to: '/'
+    chip: '2',
+    to: '/users',
+    icon: BoxIcon,
+    title: 'Contacts',
+    chipColor: 'surface',
+    chipBgColor: 'primary'
   },
-  { header: 'Others' },
-  {
-      title: 'Menu Level',
-      icon: MenuIcon,
-      to: '#',
-      children: [
-          {
-              title: 'Level 1',
-              icon: CircleIcon,
-              to: '/level1'
-          },
-          {
-              title: 'Level 1',
-              icon: CircleIcon,
-              to: '/2level',
-              children: [
-                  {
-                      title: 'Level 2',
-                      icon: CircleIcon,
-                      to: '/barry'
-                  },
-                  {
-                      title: 'Level 2',
-                      icon: CircleIcon,
-                      to: '/2.2level',
-                      children: [
-                          {
-                              title: 'Level 3',
-                              icon: CircleIcon,
-                              to: '/barry'
-                          }
-                      ]
-                  }
-              ]
-          }
-      ]
-  },
-  {
-      title: 'Disabled',
-      icon: CircleOffIcon,
-      disabled: true,
-      to: '/flexy'
-  },
-  {
-      title: 'Sub Caption',
-      icon: StarIcon,
-      subCaption: 'This is the subtitle',
-      to: '/flexy'
-  },
-  {
-      title: 'Chip',
-      icon: AwardIcon,
-      chip: '9',
-      chipColor: 'surface',
-      chipBgColor: 'secondary',
-      to: '/flexy'
-  },
-  {
-      title: 'Outlined',
-      icon: MoodSmileIcon,
-      chip: 'outline',
-      chipColor: 'secondary',
-      chipVariant: 'outlined',
-      to: '/flexy'
-  },
-  {
-      title: 'External Link',
-      icon: StarIcon,
-      to: '/flexy',
-      type: 'external'
-  }
 ];
 
 export default sidebarItem;

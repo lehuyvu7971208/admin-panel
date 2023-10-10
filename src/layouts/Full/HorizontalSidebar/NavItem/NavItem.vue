@@ -1,6 +1,6 @@
 <script setup>
 // Components
-import Icon from '../../vertical-sidebar/Icon.vue';
+import Icon from '../../VerticalSidebar/Icon.vue';
 
 defineProps({ item: Object, level: Number });
 </script>

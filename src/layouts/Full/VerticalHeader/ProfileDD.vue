@@ -2,7 +2,8 @@
 import { MailIcon } from 'vue-tabler-icons';
 import { profileDD } from '@/_mockApis/headerData';
 
-import { useAuthStore } from '@/stores/auth';
+// Stores
+import { useAuthStore } from '@/store/auth';
 
 const authStore = useAuthStore();
 </script>
@@ -64,7 +65,7 @@ const authStore = useAuthStore();
                 </div>
             </div>
             <div class="pt-4 pb-6 px-8 text-center">
-                <v-btn color="primary" variant="outlined" block @click="authStore.logout()">Logout</v-btn>
+                <v-btn color="primary" variant="outlined" block @click="authStore.signOut()">Logout</v-btn>
             </div>
         </v-sheet>
     </v-menu>

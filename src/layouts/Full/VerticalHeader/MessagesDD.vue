@@ -25,7 +25,7 @@ import { notifications } from '@/_mockApis/headerData';
 
       <perfect-scrollbar style="height: 400px">
         <v-list class="py-0 theme-list" lines="two">
-          <v-list-item v-for="item in notifications" :key="item.title" :value="item" active-color="primary"
+          <v-list-item v-for="item in notifications" :key="item.title" :value="item" color="primary"
             class="py-4 px-8">
             <template v-slot:prepend>
               <v-avatar size="48" class="mr-3">

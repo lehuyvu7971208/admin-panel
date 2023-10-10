@@ -16,6 +16,7 @@ export default defineConfig({
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
+      styles: { configFile: 'src/scss/variables.scss' },
     }),
     ViteFonts({
       google: {

@@ -84,10 +84,10 @@ import Logo from '@/layouts/Full/Logo/LogoDark.vue';
 import { useLoginContext } from './Login';
 
 // Assets
-import google from '@/assets/images/svgs/google-icon.svg';
-import facebook from '@/assets/images/svgs/facebook-icon.svg';
+// import google from '@/assets/images/svgs/google-icon.svg';
+// import facebook from '@/assets/images/svgs/facebook-icon.svg';
 
-const { username, password } = useLoginContext();
+const { username, password, signIn } = useLoginContext();
 
 const checkbox = ref<boolean>(false);
 const isSubmitting = ref<boolean>(false);
@@ -103,9 +103,21 @@ const passwordRules = ref<Array<any>>([
 
 
 const handleFormSubmit = async () => {
-  
-};
+  try {
+    errorMessage.value = null;
+    isSubmitting.value = true;
 
+    await signIn();
+  } catch (error: any) {
+    errorMessage.value = error.message;
+  } finally {
+    isSubmitting.value = false;
+  }
+};
 </script>
+
+<style lang="scss" scoped>
+@import "./Login.scss";
+</style>
 
 

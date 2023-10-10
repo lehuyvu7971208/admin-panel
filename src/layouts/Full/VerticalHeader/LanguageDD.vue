@@ -24,7 +24,7 @@ import flag4 from '@/assets/images/flag/icon-flag-fr.svg';
     </template>
     <v-sheet rounded="md" width="200" elevation="10">
       <v-list class="theme-list">
-        <v-list-item v-for="(item, index) in languageDD" :key="index" active-color="primary"
+        <v-list-item v-for="(item, index) in languageDD" :key="index" color="primary"
           :active="$i18n.locale == item.value" class="d-flex align-center" @click="() => ($i18n.locale = item.value)">
           <template v-slot:prepend>
             <v-avatar size="22">

@@ -1,7 +1,32 @@
 <template>
-  <page>Home page</page>
+  <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+
+  <v-row>
+    <v-col cols="12" md="12">
+      <UiParentCard title="Simple Title"> test </UiParentCard>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts" setup>
-import Page from '@/components/Page/Page.vue';
+// Utilities
+import { ref} from 'vue';
+
+// Components
+import UiParentCard from '@/components/shared/UiParentCard.vue';
+import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
+
+const page = ref({ title: 'Sample Page' });
+const breadcrumbs = ref([
+  {
+    text: 'Dashboard',
+    disabled: false,
+    href: '#'
+  },
+  {
+    text: 'Sample Page',
+    disabled: true,
+    href: '#'
+  }
+]);
 </script>
