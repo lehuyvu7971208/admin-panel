@@ -34,7 +34,8 @@ export const useAuthStore = defineStore<'auth', AuthState, AuthGetters, AuthActi
     },
 
     async signOut() {
-      //
+      this.accessToken = null;
+      localStorage.removeItem('accessToken');
     }
   }
 });

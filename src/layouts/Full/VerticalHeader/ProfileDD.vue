@@ -1,11 +1,22 @@
 <script setup lang="ts">
+// Utilities
+import { useRouter } from 'vue-router';
+
+// Iconss
 import { MailIcon } from 'vue-tabler-icons';
 import { profileDD } from '@/_mockApis/headerData';
 
 // Stores
 import { useAuthStore } from '@/store/auth';
 
+const router = useRouter();
 const authStore = useAuthStore();
+
+const handleSignOut = async () => {
+    await authStore.signOut();
+
+    router.push({ name: 'login' });
+};
 </script>
 
 <template>
@@ -65,7 +76,7 @@ const authStore = useAuthStore();
                 </div>
             </div>
             <div class="pt-4 pb-6 px-8 text-center">
-                <v-btn color="primary" variant="outlined" block @click="authStore.signOut()">Logout</v-btn>
+                <v-btn color="primary" variant="outlined" block @click="handleSignOut">Logout</v-btn>
             </div>
         </v-sheet>
     </v-menu>
