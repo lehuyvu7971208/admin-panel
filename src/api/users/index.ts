@@ -1,38 +1,49 @@
-import http from "@/api/index";
-import { AxiosResponse } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
+
+export enum UserState {
+  Active = "active",
+  UnActive = "unActive",
+}
 
 export type User = {
   id: number;
   email: string;
+  state: UserState;
   username: string;
   lastName: string;
   firstName: string;
   phoneRegion: string;
   phoneNumber: string;
 
-  createdDate: Date;
-  updatedDate: Date;
-  deletedDate: Date;
+  createdDate: string;
+  updatedDate: string;
+  deletedDate: string;
 };
 
-export type FindAllUsersResponseData = {
+export type FindAllUsersParamsData = {
+  limit?: number;
+  offset?: number;
+
+  email?: string;
+  username?: string;
+  lastName?: string;
+  firstName?: string;
+  phoneNumber?: string;
+  createdDate?: string;
+  includeDeleted?: boolean;
+};
+
+export type FindAllUsersResponseData = ResponsePagination<{
   users: Array<User>;
-};
-
-export const findAllUsers = async (): Promise<AxiosResponse<FindAllUsersResponseData>> => {
-  return http.get("/users");
-};
+}>;
 
 export type FindUserResponseData = {
   user: User;
 };
 
-export const findUser = async (id: number | string): Promise<AxiosResponse<FindUserResponseData>> => {
-  return http.get(`/users/${id}`);
-};
-
 export type CreateUserRequestData = {
   email: string;
+  state: UserState;
   username: string;
   password: string;
   lastName: string;
@@ -45,11 +56,8 @@ export type CreateUserResponseData = {
   user: User;
 };
 
-export const createUser = async (data: CreateUserRequestData): Promise<AxiosResponse<CreateUserResponseData>> => {
-  return http.post("/users", data);
-};
-
 export type PatchUserRequestData = {
+  state: UserState;
   lastName?: string;
   firstName?: string;
   phoneRegion?: string;
@@ -60,6 +68,26 @@ export type PatchUserResponseData = {
   user: User;
 };
 
-export const patchUser = async (id: number | string, data: PatchUserRequestData): Promise<AxiosResponse<PatchUserResponseData>> => {
-  return http.patch(`/users/${id}`, data);
-};
+export const useUserApi = (http: AxiosInstance) => ({
+  async findUser(id: number | string): Promise<AxiosResponse<FindUserResponseData>> {
+    return http.get(`/users/${id}`);
+  },
+
+  async findAllUsers(params?: FindAllUsersParamsData): Promise<AxiosResponse<FindAllUsersResponseData>> {
+    return http.get("/users", {
+      params,
+    });
+  },
+
+  async createUser(data: CreateUserRequestData): Promise<AxiosResponse<CreateUserResponseData>> {
+    return http.post("/users", data);
+  },
+
+  async patchUser(id: number | string, data: PatchUserRequestData): Promise<AxiosResponse<PatchUserResponseData>> {
+    return http.patch(`/users/${id}`, data);
+  },
+
+  async deleteUser(id: number | string): Promise<AxiosResponse<any>> {
+    return http.delete(`/users/${id}`);
+  },
+});

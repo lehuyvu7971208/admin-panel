@@ -10,6 +10,7 @@ module.exports = {
   ],
   rules: {
     'semi': 'error',
+    'no-console': 'warn',
     'vue/multi-word-component-names': 'off',
   },
 };

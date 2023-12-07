@@ -10,7 +10,11 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "axios": "^1.5.1",
+    "class-transformer": "^0.5.1",
+    "moment": "^2.29.4",
     "pinia": "^2.1.6",
+    "query-string": "^8.1.0",
+    "reflect-metadata": "^0.1.13",
     "uniqid": "^5.4.0",
     "vee-validate": "^4.11.8",
     "vue": "^3.2.0",
