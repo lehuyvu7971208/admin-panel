@@ -7,3 +7,5 @@ export const DEFAULT_PAGINATION: Pagination = {
   limit: DEFAULT_PAGINATION_LIMIT,
   offset: DEFAULT_PAGINATION_OFFSET,
 };
+
+export const SUPPORTED_REGIONS = ["84"];

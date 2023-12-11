@@ -16,6 +16,13 @@ type UserManagementSetup = {
   /**@description User Store */
   user: ComputedRef<User>;
 
+  saveUser(): Promise<User>;
+  resetUser(): Promise<void>;
+  updateUser(): Promise<User>;
+  setUser(user: User): Promise<void>;
+  deleteUser(id: number): Promise<void>;
+  getUserById(id: number): Promise<void>;
+
   /**@description Users Store */
   users: ComputedRef<Array<User>>;
   pagination: ComputedRef<Pagination>;
@@ -39,11 +46,16 @@ export const useUserManagementStore = defineStore<"userManagement", UserManageme
 
   return {
     user,
+    setUser: userStore.setUser,
+    saveUser: userStore.saveUser,
+    resetUser: userStore.resetUser,
+    updateUser: userStore.updateUser,
+    deleteUser: userStore.deleteUser,
+    getUserById: userStore.getUserById,
 
     users,
     filters,
     pagination,
-
     getUsers: usersStore.getUsers,
     setFilters: usersStore.setFilters,
   };

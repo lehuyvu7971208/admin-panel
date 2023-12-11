@@ -45,7 +45,7 @@ export type CreateUserResponseData = {
 };
 
 export type PatchUserRequestData = {
-  state: UserState;
+  state?: UserState;
   lastName?: string;
   firstName?: string;
   phoneRegion?: string;

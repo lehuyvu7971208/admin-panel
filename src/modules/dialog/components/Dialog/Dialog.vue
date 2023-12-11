@@ -1,9 +1,9 @@
 <template>
   <v-dialog v-model="isDialogShown" persistent max-width="500">
-    <v-card class="pa-6">
+    <v-card class="pa-3">
       <v-card-title class="text-h5">{{ title }}</v-card-title>
 
-      <v-card-text>{{ text }}</v-card-text>
+      <v-card-text class="mb-3">{{ text }}</v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>

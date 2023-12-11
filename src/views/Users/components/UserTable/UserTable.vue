@@ -12,49 +12,56 @@
     </thead>
 
     <tbody>
-      <tr v-for="user in users" :key="`row_${user.id}`">
-        <td class="text-subtitle-1">#{{ user.id }}</td>
+      <template v-if="hasUsers">
+        <tr v-for="user in users" :key="`row_${user.id}`">
+          <td class="text-subtitle-1">#{{ user.id }}</td>
 
-        <td>
-          <div class="py-4">
-            <h4 class="text-h6">
-              {{ user.firstName }} {{ user.lastName }}
-              <small>({{ user.username }})</small>
-            </h4>
-            <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ user.email }}</span>
-          </div>
-        </td>
+          <td>
+            <div class="py-4">
+              <h4 class="text-h6">
+                {{ user.firstName }} {{ user.lastName }}
+                <small>({{ user.username }})</small>
+              </h4>
+              <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ user.email }}</span>
+            </div>
+          </td>
 
-        <td>
-          <v-chip variant="tonal" :color="getStateColor(user.state)">{{ getStateText(user.state) }}</v-chip>
-        </td>
+          <td>
+            <v-chip variant="tonal" :color="getStateColor(user.state)">{{ getStateText(user.state) }}</v-chip>
+          </td>
 
-        <td class="text-subtitle-1">(+{{ user.phoneRegion }}) {{ user.phoneNumber }}</td>
+          <td class="text-subtitle-1">(+{{ user.phoneRegion }}) {{ user.phoneNumber }}</td>
 
-        <td class="text-subtitle-1">
-          {{ formatCreatedDate(user.createdDate) }}
-        </td>
+          <td class="text-subtitle-1">
+            {{ formatCreatedDate(user.createdDate) }}
+          </td>
 
-        <td class="text-right">
-          <div class="d-flex align-center justify-end">
-            <v-tooltip text="Edit">
-              <template v-slot:activator="{ props }">
-                <v-btn icon flat v-bind="props" @click="$emit('edit', user.id)">
-                  <PencilIcon size="20" stroke-width="1.5" class="text-primary" />
-                </v-btn>
-              </template>
-            </v-tooltip>
+          <td class="text-right">
+            <div class="d-flex align-center justify-end">
+              <v-tooltip text="Edit">
+                <template v-slot:activator="{ props }">
+                  <v-btn icon flat v-bind="props" @click="$emit('edit', user.id)">
+                    <PencilIcon size="20" stroke-width="1.5" class="text-primary" />
+                  </v-btn>
+                </template>
+              </v-tooltip>
 
-            <v-tooltip text="Delete">
-              <template v-slot:activator="{ props }">
-                <v-btn icon flat v-bind="props" @click="$emit('delete', user.id)">
-                  <TrashIcon size="20" stroke-width="1.5" class="text-error" />
-                </v-btn>
-              </template>
-            </v-tooltip>
-          </div>
-        </td>
-      </tr>
+              <v-tooltip text="Delete">
+                <template v-slot:activator="{ props }">
+                  <v-btn icon flat v-bind="props" @click="$emit('delete', user.id)">
+                    <TrashIcon size="20" stroke-width="1.5" class="text-error" />
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </div>
+          </td>
+        </tr>
+      </template>
+      <template v-else>
+        <tr>
+          <td colspan="6" class="text-center text-subtitle-1">No data</td>
+        </tr>
+      </template>
     </tbody>
   </v-table>
 </template>
@@ -62,6 +69,7 @@
 <script lang="ts" setup>
 // Utilities
 import moment from "moment";
+import { computed } from "vue";
 
 // Constants
 import { USER_STATE } from "@/modules/users/constant";
@@ -74,13 +82,17 @@ export type UserTableProps = {
 };
 
 export type UserTableEvents = {
-  (event: "edit", id: number | string): void;
-  (event: "delete", id: number | string): void;
+  (event: "edit", id: number): any;
+  (event: "delete", id: number): any;
 };
 
-defineProps<UserTableProps>();
+const props = defineProps<UserTableProps>();
 
 defineEmits<UserTableEvents>();
+
+const hasUsers = computed(() => {
+  return props.users.length > 0;
+});
 
 const formatCreatedDate = (createdDate: Date | null) => {
   return moment(createdDate).format("DD/MM/YYYY HH:mm");
