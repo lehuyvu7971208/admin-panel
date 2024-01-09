@@ -23,9 +23,16 @@ const routes: Array<RouteRecordRaw> = [
 
       {
         name: "users",
-        path: "/users",
+        path: "/user/management",
         meta: { authRequired: true },
         component: () => import(/* webpackChunkName: "users" */ "@/views/Users/Users.vue"),
+      },
+
+      {
+        name: "admins",
+        path: "/admin/management",
+        meta: { authRequired: true },
+        component: () => import(/* webpackChunkName: "users" */ "@/views/Admins/Admins.vue"),
       },
     ],
   },

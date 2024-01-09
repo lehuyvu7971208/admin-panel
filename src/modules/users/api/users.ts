@@ -1,12 +1,8 @@
+// Utilities
 import { AxiosInstance, AxiosResponse } from "axios";
 
 // Models
-
-
-export enum UserState {
-  Active = "active",
-  UnActive = "unActive",
-}
+import { UserState } from "../models/user";
 
 export type FindAllUsersParamsData = {
   limit?: number;

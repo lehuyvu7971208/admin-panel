@@ -1,6 +1,4 @@
-import {
-  BoxIcon,
-} from 'vue-tabler-icons';
+import { BoxIcon, UserCogIcon } from "vue-tabler-icons";
 
 export interface menu {
   icon?: any;
@@ -19,14 +17,21 @@ export interface menu {
 }
 
 const sidebarItem: menu[] = [
-  { header: 'Apps' },
+  { header: "System" },
   {
-    chip: '2',
-    to: '/users',
+    title: "Admin",
+    icon: UserCogIcon,
+    to: "/admin/management",
+  },
+
+  { header: "Apps" },
+  {
+    chip: "2",
     icon: BoxIcon,
-    title: 'Contacts',
-    chipColor: 'surface',
-    chipBgColor: 'primary'
+    title: "Contacts",
+    chipColor: "surface",
+    chipBgColor: "primary",
+    to: "/user/management",
   },
 ];
 

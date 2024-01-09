@@ -10,34 +10,31 @@ import { computed } from "vue";
 import Filtered from "@/components/shared/Filtered/Filtered.vue";
 
 // Types
-import { FindAllUsersParamsData } from "@/modules/users/api/users";
+import { FindAllAdminsParamsData } from "@/modules/admins/api/admins";
 
 // Constants
-const FILTERED_TITLE_BY_KEY: Omit<Record<keyof FindAllUsersParamsData, string>, "offset" | "limit"> = {
-  email: "Email",
+const FILTERED_TITLE_BY_KEY: Omit<Record<keyof FindAllAdminsParamsData, string>, "offset" | "limit"> = {
+  type: "Role",
+  state: "State",
   username: "Username",
-  lastName: "Last Name",
-  firstName: "First Name",
-  phoneNumber: "Phone Number",
-  createdDate: "Created Date",
   includeDeleted: "Include Deleted",
 };
 
-type UserFilteredProps = {
-  filters: FindAllUsersParamsData;
+type AdminFilteredProps = {
+  filters: FindAllAdminsParamsData;
 };
 
-type UserFilteredEvents = {
-  (event: "change", filters: FindAllUsersParamsData): void;
+const props = defineProps<AdminFilteredProps>();
+
+type AdminFilteredEvents = {
+  (event: "change", filters: FindAllAdminsParamsData): void;
 };
 
-const emit = defineEmits<UserFilteredEvents>();
-
-const props = defineProps<UserFilteredProps>();
+const emit = defineEmits<AdminFilteredEvents>();
 
 const filteredItems = computed(() => {
   return Object.entries(props.filters).reduce<Array<any>>((data, filter: any) => {
-    const key = filter.at(0) as keyof FindAllUsersParamsData;
+    const key = filter.at(0) as keyof FindAllAdminsParamsData;
 
     if (key === "offset" || key === "limit") {
       return data;
@@ -52,7 +49,7 @@ const filteredItems = computed(() => {
 });
 
 const handleFilterRemove = (filter: any): void => {
-  const key = filter.key as keyof FindAllUsersParamsData;
+  const key = filter.key as keyof FindAllAdminsParamsData;
 
   const filters = { ...props.filters };
 

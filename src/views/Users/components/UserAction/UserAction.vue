@@ -16,12 +16,19 @@
           <v-row>
             <v-col cols="12" class="py-0">
               <v-label class="font-weight-medium mb-2">Username</v-label>
-              <v-text-validate-field :readonly="values.id" name="username" type="text" color="primary" variant="outlined" placeholder="johndeo" />
+              <v-text-validate-field
+                :readonly="isFieldReadonly"
+                type="text"
+                name="username"
+                color="primary"
+                variant="outlined"
+                placeholder="johndeo"
+              />
             </v-col>
 
             <v-col cols="12" class="py-0">
               <v-label class="font-weight-medium mb-2">Email</v-label>
-              <v-text-validate-field :readonly="values.id" name="email" color="primary" variant="outlined" placeholder="john.deo" />
+              <v-text-validate-field :readonly="isFieldReadonly" name="email" color="primary" variant="outlined" placeholder="john.deo" />
             </v-col>
 
             <v-col v-if="!values.id" cols="12" class="py-0">
@@ -53,11 +60,11 @@
               <v-label class="font-weight-medium mb-2">Phone Number</v-label>
               <v-row>
                 <v-col cols="3">
-                  <v-select-validate name="phoneRegion" :items="SUPPORTED_REGIONS" :readonly="values.id" />
+                  <v-select-validate name="phoneRegion" :items="SUPPORTED_REGIONS" :readonly="isFieldReadonly" />
                 </v-col>
                 <v-col cols="9">
                   <v-text-validate-field
-                    :readonly="values.id"
+                    :readonly="isFieldReadonly"
                     type="text"
                     color="primary"
                     name="phoneNumber"
@@ -165,11 +172,15 @@ const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
   },
 });
 
-const dialogTitle = computed(() => {
+const dialogTitle = computed<string>(() => {
   return values.id ? "Edit User" : "Add User";
 });
 
-const isUserActived = computed<Boolean>({
+const isFieldReadonly = computed(() => {
+  return !!values.id;
+});
+
+const isUserActived = computed<boolean>({
   get() {
     return values.state === USER_STATE.ACTIVE;
   },

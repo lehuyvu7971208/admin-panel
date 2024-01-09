@@ -31,6 +31,7 @@ const customizer = useCustomizerStore();
       <v-container fluid class="page-wrapper pb-sm-15 pb-10">
         <div :class="customizer.boxed ? 'maxWidth' : ''">
           <RouterView />
+          
           <v-btn
             icon
             size="large"

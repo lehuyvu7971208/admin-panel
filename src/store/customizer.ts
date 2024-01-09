@@ -31,8 +31,8 @@ export const useCustomizerStore = defineStore({
     boxed: config.boxed,
     inputBg: config.inputBg,
     actTheme: config.actTheme,
-    miniSidebar: config.miniSidebar,
     borderCard: config.borderCard,
+    miniSidebar: config.miniSidebar,
     sidebarDrawer: config.sidebarDrawer,
     customizerDrawer: config.customizerDrawer,
     horizontalLayout: config.horizontalLayout, // Horizontal layout

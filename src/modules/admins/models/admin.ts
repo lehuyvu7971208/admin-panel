@@ -2,22 +2,22 @@
 import Model from "@/libs/model";
 import { Expose } from "class-transformer";
 
-export enum UserState {
+export enum AdminState {
   Active = "active",
   UnActive = "unActive",
 }
 
-export default class User extends Model {
+export enum AdminRole {
+  Admin = "admin",
+  System = "system",
+}
+
+export default class Admin extends Model {
   @Expose() id: number = 0;
-  @Expose() email: string = "";
   @Expose() username: string = "";
   @Expose() password: string = "";
-  @Expose() state: UserState = UserState.UnActive;
-
-  @Expose() lastName: string = "";
-  @Expose() firstName: string = "";
-  @Expose() phoneNumber: string = "";
-  @Expose() phoneRegion: string = "84";
+  @Expose() type: AdminRole = AdminRole.Admin;
+  @Expose() state: AdminState = AdminState.UnActive;
 
   @Expose() createdDate: Date | null = null;
   @Expose() updatedDate: Date | null = null;

@@ -1,5 +1,7 @@
 <template>
   <div class="user-management">
+    <base-breadcrumb title="User Management" :breadcrumbs="breadcrumbs" />
+
     <v-row class="mb-3">
       <v-col>
         <user-filters :filters="filters" @submit="handleFilterChange" />
@@ -44,6 +46,7 @@ import UserAction, { UserFormExpose } from "./components/UserAction/UserAction.v
 
 // Shared Components
 import Pagination from "@/components/shared/Pagination/Pagination.vue";
+import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue";
 
 // Models
 import User from "@/modules/users/models/user";
@@ -52,11 +55,24 @@ import User from "@/modules/users/models/user";
 import { FindAllUsersParamsData } from "@/api/users";
 
 // Store
-import { useUserManagementStore } from "./store/UserManagement";
+import { useUserManagementStore } from "./store/userManagement";
 
 const dialog = useDialog();
 const userActionRef = ref<UserFormExpose>();
 const userManagementStore = useUserManagementStore();
+
+const breadcrumbs = computed(() => [
+  {
+    text: "Dashboard",
+    disabled: false,
+    href: "/",
+  },
+  {
+    text: "User management",
+    disabled: true,
+    href: "#",
+  },
+]);
 
 const user = computed(() => userManagementStore.user);
 const users = computed(() => userManagementStore.users);

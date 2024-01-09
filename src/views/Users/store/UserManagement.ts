@@ -12,7 +12,7 @@ import { FindAllUsersParamsData } from "@/modules/users/api/users";
 import { useUserStore } from "@/modules/users/store/user";
 import { useUsersStore } from "@/modules/users/store/users";
 
-type UserManagementSetup = {
+type UserManagementStoreSetup = {
   /**@description User Store */
   user: ComputedRef<User>;
 
@@ -32,7 +32,7 @@ type UserManagementSetup = {
   setFilters(filters: FindAllUsersParamsData): Promise<void>;
 };
 
-export const useUserManagementStore = defineStore<"userManagement", UserManagementSetup>("userManagement", () => {
+export const useUserManagementStore = defineStore<"userManagement", UserManagementStoreSetup>("userManagement", () => {
   /**@description User Store */
   const userStore = useUserStore();
   const user = computed(() => userStore.target);
