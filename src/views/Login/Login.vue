@@ -1,23 +1,23 @@
 <template>
-  <auth ref="authRef">
-    <login-form :is-submitting="isSubmitting" :error-message="errorMessage" @submit="handleFormSubmit" />
-  </auth>
+  <login-form :is-submitting="isSubmitting" :error-message="errorMessage" @submit="handleFormSubmit" />
 </template>
 
 <script setup lang="ts">
 // Utilities
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 // Components
 import LoginForm from "./components/LoginForm/LoginForm.vue";
-import Auth, { AuthExpose } from "@/modules/auth/components/Auth/Auth.vue";
-import { useRouter } from "vue-router";
+
+// Store
+import { useAuthStore } from "@/modules/auth/store/auth";
 
 // Assets
 // import google from '@/assets/images/svgs/google-icon.svg';
 // import facebook from '@/assets/images/svgs/facebook-icon.svg';\
 const router = useRouter();
-const authRef = ref<AuthExpose>();
+const authStore = useAuthStore();
 
 const isSubmitting = ref<boolean>(false);
 const errorMessage = ref<string | null>("");
@@ -27,7 +27,7 @@ const handleFormSubmit = async (username: string, password: string) => {
     errorMessage.value = null;
     isSubmitting.value = true;
 
-    await authRef.value?.signIn({
+    await authStore.signIn({
       username,
       password,
       userAgent: navigator.userAgent,

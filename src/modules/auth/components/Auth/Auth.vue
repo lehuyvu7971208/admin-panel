@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 // Utilities
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 
 // Store
 import { useAuthStore } from "../../store/auth";
@@ -31,6 +31,10 @@ const signIn = async (data: SignInRequestData) => {
 
 defineExpose<AuthExpose>({
   signIn,
-  signOut
+  signOut,
+});
+
+onMounted(() => {
+  authStore.me();
 });
 </script>

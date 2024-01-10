@@ -1,8 +1,16 @@
 // Utilities
+import { withAuth } from "@/modules/auth/utils/auth";
 import { useAuthStore } from "@/modules/auth/store/auth";
 
 // Composables
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
+
+const loadAuthInfo = (): boolean => {
+  const authStore = useAuthStore();
+  authStore.me();
+
+  return true;
+};
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
+    beforeEnter: [loadAuthInfo],
     component: () => import(/* webpackChunkName: "layout" */ "@/layouts/Full/FullLayout.vue"),
     children: [
       {
