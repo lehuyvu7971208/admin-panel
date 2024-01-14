@@ -1,5 +1,4 @@
 // Utilities
-import { withAuth } from "@/modules/auth/utils/auth";
 import { useAuthStore } from "@/modules/auth/store/auth";
 
 // Composables
@@ -34,14 +33,21 @@ const routes: Array<RouteRecordRaw> = [
         name: "users",
         path: "/user/management",
         meta: { authRequired: true },
-        component: () => import(/* webpackChunkName: "users" */ "@/views/Users/Users.vue"),
+        component: () => import(/* webpackChunkName: "user-management" */ "@/views/Users/Users.vue"),
       },
 
       {
         name: "admins",
         path: "/admin/management",
         meta: { authRequired: true },
-        component: () => import(/* webpackChunkName: "users" */ "@/views/Admins/Admins.vue"),
+        component: () => import(/* webpackChunkName: "admin-management" */ "@/views/Admins/Admins.vue"),
+      },
+
+      {
+        name: "businesses",
+        path: "/business/management",
+        meta: { authRequired: true },
+        component: () => import(/* webpackChunkName: "business-management" */ "@/views/Businesses/Businesses.vue"),
       },
     ],
   },

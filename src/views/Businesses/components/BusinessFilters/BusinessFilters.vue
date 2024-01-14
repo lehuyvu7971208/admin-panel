@@ -6,24 +6,34 @@
       </v-expansion-panel-title>
 
       <v-expansion-panel-text>
-        <form class="py-2" @submit="handleFormSumit">
+        <form class="py-2" @submit.prevent="handleFormSubmit">
           <v-row>
             <v-col sm="4">
-              <v-label class="font-weight-medium mb-2">Username</v-label>
-              <v-text-validate-field name="username" hide-details="auto" placeholder="Etc: admin" />
+              <v-label class="font-weight-medium mb-2">Name</v-label>
+              <v-text-validate-field name="name" hide-details="auto" placeholder="Etc: Adidas shop" />
+            </v-col>
+
+            <v-col sm="4">
+              <v-label class="font-weight-medium mb-2">Owner</v-label>
+              <v-text-validate-field name="owner" hide-details="auto" placeholder="Etc: David" />
+            </v-col>
+
+            <v-col sm="4">
+              <v-label class="font-weight-medium mb-2">User</v-label>
+              <v-text-validate-field name="userId" hide-details="auto" placeholder="Etc: David" />
             </v-col>
 
             <v-col sm="4">
               <v-label class="font-weight-medium mb-2">Type</v-label>
-              <v-select-validate name="type" :items="ADMIN_ROLE_OPTIONS" hide-details="auto" />
+              <v-select-validate name="type" :items="BUSINESS_TYPE_OPTIONS" hide-details="auto" />
             </v-col>
 
             <v-col sm="4">
               <v-label class="font-weight-medium mb-2">State</v-label>
-              <v-select-validate name="state" :items="ADMIN_STATE_OPTIONS" hide-details="auto" />
+              <v-select-validate name="state" :items="BUSINESS_STATE_OPTIONS" hide-details="auto" />
             </v-col>
 
-            <v-col sm="4">
+            <v-col sm="12">
               <v-switch-validate name="includeDeleted" color="primary" label="Include deleted" />
             </v-col>
           </v-row>
@@ -49,57 +59,62 @@ import * as Yup from "yup";
 import { watch } from "vue";
 import { useForm } from "vee-validate";
 
+// Apis
+import { FindAllBusinessesParamsData } from "@/modules/businesses/api/businesses";
+
 // Components Shared
 import VSwitchValidate from "@/components/shared/VSwitchValidate/VSwitchValidate.vue";
 import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
 import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
 
-// Apis
-import { FindAllAdminsParamsData } from "@/modules/admins/api/admins";
-
 // Constants
-import { ADMIN_ROLE_OPTIONS, ADMIN_STATE_OPTIONS } from "@/modules/admins/constant";
+import { BUSINESS_STATE_OPTIONS, BUSINESS_TYPE_OPTIONS } from "@/modules/businesses/constant";
 
-type AdminFiltersProps = {
-  filters: FindAllAdminsParamsData;
+export type BusinessFiltersProps = {
+  filters: FindAllBusinessesParamsData;
 };
 
-const props = defineProps<AdminFiltersProps>();
+const props = defineProps<BusinessFiltersProps>();
 
 const validationSchema = Yup.object({
   type: Yup.string().default(""),
   state: Yup.string().default(""),
-  username: Yup.string().optional().default(""),
+  userId: Yup.string().default(""),
+  name: Yup.string().optional().default(""),
+  owner: Yup.string().optional().default(""),
   includeDeleted: Yup.boolean().optional().default(false),
-}).optional();
+});
 
-type AdminFiltersEvent = {
-  (event: "submit", data: FindAllAdminsParamsData): void;
+export type BusinessFiltersEvents = {
+  (event: "submit", data: FindAllBusinessesParamsData): void;
 };
 
-const emit = defineEmits<AdminFiltersEvent>();
+const emit = defineEmits<BusinessFiltersEvents>();
 
-const { handleSubmit, setValues, handleReset } = useForm<FindAllAdminsParamsData>({
+const { handleSubmit, setValues, handleReset } = useForm<FindAllBusinessesParamsData>({
   validationSchema,
   initialValues: {
+    name: "",
     type: "",
+    owner: "",
     state: "",
-    username: "",
+    userId: "",
     includeDeleted: false,
   },
 });
 
-const handleFormSumit = handleSubmit((values) => {
+const handleFormSubmit = handleSubmit((values) => {
   emit("submit", values);
 });
 
 watch(
   () => props.filters,
-  (filters) => setValues(filters, false),
-  { deep: true, immediate: true }
+  (filters) => {
+    setValues(filters, false);
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
 );
 </script>
-
-<style lang="scss" scoped>
-@import "./AdminFilters.scss";
-</style>

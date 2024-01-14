@@ -6,7 +6,7 @@ import { AxiosInstance } from "axios";
 import { userApi } from "../api/users";
 
 // Models
-import User from "../models/user";
+import User from "../../../models/user";
 
 // Store
 import { useHttpStore } from "@/modules/http/store/http";

@@ -81,12 +81,12 @@ export type UserTableProps = {
   users: Array<User>;
 };
 
+const props = defineProps<UserTableProps>();
+
 export type UserTableEvents = {
   (event: "edit", id: number): any;
   (event: "delete", id: number): any;
 };
-
-const props = defineProps<UserTableProps>();
 
 defineEmits<UserTableEvents>();
 

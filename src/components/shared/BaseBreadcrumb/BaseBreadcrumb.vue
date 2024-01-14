@@ -1,6 +1,6 @@
 <template>
     <div class="mt-3 mb-6">
-        <div class="d-flex justify-space-between">
+        <div class="d-flex justify-space-between align-end">
             <div class="d-flex py-0 align-center">
                 <div>
                     <h3 class="text-h3 mb-2">{{ props.title }}</h3>
@@ -15,6 +15,8 @@
                     </v-breadcrumbs>
                 </div>
             </div>
+
+            <slot name="actions"></slot>
         </div>
     </div>
 </template>

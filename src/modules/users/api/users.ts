@@ -2,7 +2,7 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 
 // Models
-import { UserState } from "../models/user";
+import { UserState } from "../../../models/user";
 
 export type FindAllUsersParamsData = {
   limit?: number;

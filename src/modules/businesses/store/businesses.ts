@@ -3,47 +3,47 @@ import { defineStore } from "pinia";
 import { AxiosInstance } from "axios";
 
 // Models
-import Admin from "../../../models/admin";
+import Business from "@/models/business";
 
 // Store
 import { useHttpStore } from "@/modules/http/store/http";
 
 // Apis
-import { adminApi, FindAllAdminsParamsData } from "../api/admins";
+import { businessesApi, FindAllBusinessesParamsData } from "../api/businesses";
 
 // Constants
 import { DEFAULT_PAGINATION } from "@/libs/constant";
 
-export type AdminsState = {
-  items: Array<Admin>;
+export type BusinessesState = {
+  items: Array<Business>;
 
   pagination: Pagination;
 
-  filters: FindAllAdminsParamsData;
+  filters: FindAllBusinessesParamsData;
 };
 
-export type AdminsGetters = {
+export type BusinessesGetters = {
   http(): AxiosInstance;
 };
 
-export type AdminsActions = {
-  getAdmins(filters: FindAllAdminsParamsData): Promise<void>;
-  setFilters(filters: FindAllAdminsParamsData): Promise<void>;
+export type BusinessesActions = {
+  setFilters(filters: FindAllBusinessesParamsData): Promise<void>;
+  getBusinesses(filters: FindAllBusinessesParamsData): Promise<void>;
 };
 
-const DEFAULT_ADMINS_FILTERS = {
-  type: "",
-  state: "",
-  username: "",
+const DEFAULT_BUSINESSES_FILTERS = {
+  name: "",
+  owner: "",
+  userId: "",
   includeDeleted: false,
 };
 
-export const useAdminsStore = defineStore<"admins", AdminsState, AdminsGetters, AdminsActions>("admins", {
+export const useBusinessesStore = defineStore<"businesses", BusinessesState, BusinessesGetters, BusinessesActions>("businesses", {
   state: () => ({
     items: [],
 
     filters: {
-      ...DEFAULT_ADMINS_FILTERS,
+      ...DEFAULT_BUSINESSES_FILTERS,
       limit: 10,
       offset: 0,
     },
@@ -63,15 +63,15 @@ export const useAdminsStore = defineStore<"admins", AdminsState, AdminsGetters, 
   actions: {
     async setFilters(filters) {
       this.filters = {
-        ...DEFAULT_ADMINS_FILTERS,
+        ...DEFAULT_BUSINESSES_FILTERS,
         ...filters,
       };
     },
 
-    async getAdmins(filters) {
-      const response = await adminApi(this.http).findAllAdmins(filters);
+    async getBusinesses(filters) {
+      const response = await businessesApi(this.http).findAllBusinesses(filters);
 
-      this.items = Admin.build(response.data.admins ?? []) as Array<Admin>;
+      this.items = Business.build(response.data.businesses ?? []) as Array<Business>;
 
       this.pagination.total = response.data.pagination.total;
       this.pagination.limit = response.data.pagination.limit;

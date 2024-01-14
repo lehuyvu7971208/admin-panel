@@ -6,7 +6,7 @@ import { AxiosInstance } from "axios";
 import { adminApi } from "../api/admins";
 
 // Models
-import Admin from "../models/admin";
+import Admin from "../../../models/admin";
 
 // Store
 import { useHttpStore } from "@/modules/http/store/http";

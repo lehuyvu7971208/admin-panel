@@ -2,7 +2,7 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 
 // Models
-import { AdminState, AdminRole } from "../models/admin";
+import { AdminState, AdminRole } from "../../../models/admin";
 
 export type FindAllAdminsParamsData = {
   type?: string;

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { AxiosInstance } from "axios";
 
 // Models
-import User from "../models/user";
+import User from "../../../models/user";
 
 // Apis
 import { userApi, FindAllUsersParamsData } from "../api/users";

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { computed, ComputedRef } from "vue";
 
 // Models
-import User from "@/modules/users/models/user";
+import User from "@/models/user";
 
 // Apis
 import { FindAllUsersParamsData } from "@/modules/users/api/users";
