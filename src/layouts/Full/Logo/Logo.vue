@@ -1,7 +1,8 @@
-<script setup>
+<script lang="ts" setup>
 import { computed } from "vue";
-import LogoLight from "./LogoLight.vue";
+
 import LogoDark from "./LogoDark.vue";
+import LogoLight from "./LogoLight.vue";
 
 import { useCustomizerStore } from "@/store/customizer";
 
@@ -24,6 +25,6 @@ const dark = computed(() => {
 });
 </script>
 <template>
-    <LogoLight v-if="dark" />
-    <LogoDark v-else />
+  <LogoLight v-if="dark" />
+  <LogoDark v-else />
 </template>

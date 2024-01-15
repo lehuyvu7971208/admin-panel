@@ -50,7 +50,7 @@ import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vu
 import User from "@/models/user";
 
 // Apis
-import { FindAllUsersParamsData } from "@/api/users";
+import { FindAllUsersParamsData } from "@/modules/users/api/users";
 
 // Store
 import { useUserManagementStore } from "./store/userManagement";

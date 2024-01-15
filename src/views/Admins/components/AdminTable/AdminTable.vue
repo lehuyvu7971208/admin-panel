@@ -61,7 +61,7 @@ import moment from "moment";
 import { computed } from "vue";
 
 // Models
-import Admin, { AdminRole, AdminState } from "@/modules/admins/models/admin";
+import Admin, { AdminRole, AdminState } from "@/models/admin";
 
 // Constants
 import { ADMIN_STATE, ADMIN_ROLE_OPTIONS } from "@/modules/admins/constant";

@@ -1,6 +1,20 @@
 <template>
   <form autocomplete="off" @submit="handleFormSubmit">
     <v-card elevation="0">
+      <v-card-text class="py-0">
+        <v-radio-group hide-details>
+          <v-row>
+            <v-col sm="6">
+              <v-radio label="Create a new user" color="primary" value="1"></v-radio>
+            </v-col>
+
+            <v-col sm="6">
+              <v-radio label="Use a exsited user" color="primary" value="2"></v-radio>
+            </v-col>
+          </v-row>
+        </v-radio-group>
+      </v-card-text>
+
       <v-card-text>
         <h6 class="text-h6 mb-6">User Detail</h6>
 

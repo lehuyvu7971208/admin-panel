@@ -4,7 +4,7 @@ import { shallowRef } from "vue";
 import sidebarItems from "./sidebarItem";
 
 // Components
-import Logo from "../logo/Logo.vue";
+import Logo from "../Logo/Logo.vue";
 import NavItem from "./NavItem/index.vue";
 import NavGroup from "./NavGroup/NavGroup.vue";
 import NavCollapse from "./NavCollapse/NavCollapse.vue";
