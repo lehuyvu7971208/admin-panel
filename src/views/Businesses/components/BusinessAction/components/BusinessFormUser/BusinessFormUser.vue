@@ -1,99 +1,33 @@
 <template>
-  <form autocomplete="off" @submit="handleFormSubmit">
-    <v-card elevation="0">
-      <v-card-text class="py-0">
-        <v-radio-group hide-details>
-          <v-row>
-            <v-col sm="6">
-              <v-radio label="Create a new user" color="primary" value="1"></v-radio>
-            </v-col>
-
-            <v-col sm="6">
-              <v-radio label="Use a exsited user" color="primary" value="2"></v-radio>
-            </v-col>
-          </v-row>
-        </v-radio-group>
-      </v-card-text>
-
-      <v-card-text>
-        <h6 class="text-h6 mb-6">User Detail</h6>
-
+  <v-card elevation="0">
+    <v-card-text class="py-0">
+      <v-radio-group v-model:model-value="userType" hide-details>
         <v-row>
-          <v-col cols="12" class="py-0">
-            <v-label class="font-weight-medium mb-2">Username</v-label>
-            <v-text-validate-field type="text" name="username" color="primary" variant="outlined" placeholder="johndeo" />
+          <v-col sm="6">
+            <v-radio :value="SELECT_USER_TYPE.CREATE" label="Create a new user" color="primary"></v-radio>
           </v-col>
 
-          <v-col cols="12" class="py-0">
-            <v-label class="font-weight-medium mb-2">Email</v-label>
-            <v-text-validate-field name="email" color="primary" variant="outlined" placeholder="john.deo" />
-          </v-col>
-
-          <v-col cols="12" class="py-0">
-            <v-label class="font-weight-medium mb-2">Password</v-label>
-            <v-password-validate-field name="password" color="primary" variant="outlined" placeholder="john.deo" />
+          <v-col sm="6">
+            <v-radio :value="SELECT_USER_TYPE.EXIST" label="Use a exsited user" color="primary"></v-radio>
           </v-col>
         </v-row>
-      </v-card-text>
+      </v-radio-group>
+    </v-card-text>
+  </v-card>
 
-      <v-card-text>
-        <h6 class="text-h6 mb-6">User Information</h6>
-
-        <v-row>
-          <v-col cols="12" class="py-0">
-            <v-label class="font-weight-medium mb-2">First Name</v-label>
-            <v-text-validate-field name="firstName" type="text" color="primary" variant="outlined" placeholder="John" />
-          </v-col>
-
-          <v-col cols="12" class="py-0">
-            <v-label class="font-weight-medium mb-2">Last Name</v-label>
-            <v-text-validate-field name="lastName" type="text" color="primary" placeholder="Deo" variant="outlined" />
-          </v-col>
-
-          <v-col cols="12" class="py-0">
-            <v-label class="font-weight-medium mb-2">Phone Number</v-label>
-            <v-row>
-              <v-col cols="3">
-                <v-select-validate name="phoneRegion" :items="SUPPORTED_REGIONS" />
-              </v-col>
-              <v-col cols="9">
-                <v-text-validate-field type="text" color="primary" name="phoneNumber" variant="outlined" placeholder="0900000000" />
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
-
-      <v-card-text>
-        <v-row>
-          <v-col sm="6" class="text-left">
-            <v-btn flat class="bg-lighterror text-error" @click="handleCancelClick">Cancel</v-btn>
-          </v-col>
-
-          <v-col sm="6" class="text-right">
-            <v-btn flat type="submit" color="secondary" class="ml-4">Next</v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-  </form>
+  <component :is="userFormComponent" @cancel="$emit('cancel')" @submit="handleUserFormSubmit" />
 </template>
 
 <script lang="ts" setup>
 // Utilities
-import { useForm } from "vee-validate";
+import { ref, computed } from "vue";
 
 // Components
-import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
-import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
-import VPasswordValidateField from "@/components/shared/VPasswordValidateField/VPasswordValidateField.vue";
+import BusinessFormUserExist from "../BusinessFormUserExist/BusinessFormUserExist.vue";
+import BusinessFormUserCreate, { FormValues as CreateUserFormValue } from "../BusinessFormUserCreate/BusinessFormUserCreate.vue";
 
-// Validation
-import { createUserValidationSchema } from "@/libs/validation/user";
-
-// Constants
-import { SUPPORTED_REGIONS } from "@/libs/constant";
-import { USER_STATE } from "@/modules/users/constant";
+// Store
+import { useBusinessActionStore } from "../../store/businessAction";
 
 export type FormValues = {
   id: number;
@@ -108,33 +42,48 @@ export type FormValues = {
   confirmPassword: string;
 };
 
-const { handleSubmit } = useForm<FormValues>({
-  initialValues: {
-    id: 0,
-    email: "",
-    username: "",
-    password: "",
-    lastName: "",
-    firstName: "",
-    phoneNumber: "",
-    phoneRegion: "84",
-    state: USER_STATE.ACTIVE,
-  },
-  validationSchema: createUserValidationSchema,
+// Constants
+const SELECT_USER_TYPE = {
+  EXIST: "EXIST",
+  CREATE: "CREATE",
+};
+
+const businessActionStore = useBusinessActionStore();
+const userType = ref<string>(SELECT_USER_TYPE.CREATE);
+
+const userFormComponent = computed(() => {
+  if (userType.value === SELECT_USER_TYPE.CREATE) {
+    return BusinessFormUserCreate;
+  }
+
+  if (userType.value === SELECT_USER_TYPE.EXIST) {
+    return BusinessFormUserExist;
+  }
+  return null;
 });
 
 export type BusinessFormUserEvents = {
   (event: "cancel"): void;
-  (event: "submit", values: FormValues): void;
+  (event: "submit", values: any): void;
 };
 
 const emit = defineEmits<BusinessFormUserEvents>();
 
-const handleCancelClick = () => {
-  emit("cancel");
+const handleUserFormSubmit = (data: any) => {
+  if (userType.value === SELECT_USER_TYPE.EXIST) {
+    handleExistUserFormSubmit(data);
+  } else if (userType.value === SELECT_USER_TYPE.CREATE) {
+    handleCreateUserFormSubmit(data);
+  }
 };
 
-const handleFormSubmit = handleSubmit((values) => {
-  emit("submit", values);
-});
+const handleExistUserFormSubmit = async (id: number) => {
+  const user = await businessActionStore.getSearchedUser(id);
+
+  emit("submit", user);
+};
+
+const handleCreateUserFormSubmit = (data: CreateUserFormValue) => {
+  emit("submit", data);
+};
 </script>

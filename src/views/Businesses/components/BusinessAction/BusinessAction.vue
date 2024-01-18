@@ -16,16 +16,29 @@
 
 <script lang="ts" setup>
 // Utilities
-import { ref, computed } from "vue";
+import { ref, watch, computed } from "vue";
+
+// Models
+import Business from "@/models/business";
+
+// Store
+import { useBusinessActionStore } from "./store/businessAction";
 
 // Components
 import BusinessForm from "./components/BusinessForm/BusinessForm.vue";
 
 const isDialogShown = ref<boolean>();
+const businessActionStore = useBusinessActionStore();
 
 const dialogTitle = computed<string>(() => {
   return "Add Business";
 });
+
+export type BusinessActionProps = {
+  business: Business;
+};
+
+const props = defineProps<BusinessActionProps>();
 
 export type BusinessActionEvents = {
   (event: "submit", values: any): void;
@@ -45,6 +58,16 @@ export type BusinessActionExpose = {
 defineExpose<BusinessActionExpose>({
   show: () => (isDialogShown.value = true),
   hide: () => (isDialogShown.value = false),
+});
+
+watch(isDialogShown, (isDialogShown) => {
+  if (isDialogShown) {
+    businessActionStore.setBusiness(props.business);
+  } else {
+    businessActionStore.setSearchedUsers([]);
+    businessActionStore.setSearchKeyword("");
+    businessActionStore.setBusiness(new Business());
+  }
 });
 </script>
 

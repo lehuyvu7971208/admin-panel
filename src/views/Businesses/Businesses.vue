@@ -2,7 +2,7 @@
   <div class="business-management">
     <base-breadcrumb title="Business Management" :breadcrumbs="breadcrumbs">
       <template #actions>
-        <business-action ref="businessActionRef" @submit="handleBusinessActionSubmit" />
+        <business-action ref="businessActionRef" :business="business" @submit="handleBusinessActionSubmit" />
       </template>
     </base-breadcrumb>
 
@@ -71,7 +71,7 @@ const breadcrumbs = computed(() => [
 ]);
 
 const filters = computed(() => businessManagementStore.filters);
-
+const business = computed(() => businessManagementStore.business);
 const businesses = computed(() => businessManagementStore.businesses);
 const pagination = computed(() => businessManagementStore.pagination);
 

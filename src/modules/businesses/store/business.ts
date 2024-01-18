@@ -53,6 +53,7 @@ export const useBusinessStore = defineStore<"business", BusinessState, BusinessG
         owner: this.target.owner,
 
         user: {
+          id: this.target.user.id,
           email: this.target.user.email,
           state: this.target.user.state,
           username: this.target.user.username,

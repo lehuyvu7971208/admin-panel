@@ -12,7 +12,7 @@
       <v-stepper-window>
         <v-stepper-window-item value="1">
           <v-row class="justify-center">
-            <v-col sm="7">
+            <v-col sm="8">
               <business-form-user :value="user" @cancel="$emit('cancel')" @submit="handleUserFormSubmit" />
             </v-col>
           </v-row>
@@ -20,7 +20,7 @@
 
         <v-stepper-window-item value="2">
           <v-row class="justify-center">
-            <v-col sm="7">
+            <v-col sm="8">
               <business-form-detail @cancel="$emit('cancel')" @back="handleBackClick" @submit="handleDetailFormSubmit" />
             </v-col>
           </v-row>
