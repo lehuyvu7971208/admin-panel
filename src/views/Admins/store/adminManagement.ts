@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { computed, ComputedRef } from "vue";
 
 // Models
-import Admin from "@/modules/admins/models/admin";
+import Admin from "@/models/admin";
 
 // Apis
 import { FindAllAdminsParamsData } from "@/modules/admins/api/admins";

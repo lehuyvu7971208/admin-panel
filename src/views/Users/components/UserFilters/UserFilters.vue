@@ -1,10 +1,12 @@
 <template>
   <v-expansion-panels>
     <v-expansion-panel elevation="10">
-      <v-expansion-panel-title color="white" class="text-h6"> <v-icon icon="mdi-filter-variant" class="mr-3" /> Filter </v-expansion-panel-title>
+      <v-expansion-panel-title color="white" class="text-h6" static>
+        <v-icon icon="mdi-filter-variant" class="mr-3" /> Filter
+      </v-expansion-panel-title>
 
       <v-expansion-panel-text>
-        <form class="py-2" @submit.prevent="submit">
+        <form class="py-2" @submit.prevent="handleFormSubmit">
           <v-row>
             <v-col sm="4">
               <v-label class="font-weight-medium mb-2">Username</v-label>
@@ -81,7 +83,7 @@
 
           <v-row>
             <v-col class="text-right">
-              <v-btn flat class="bg-lighterror text-error">Reset</v-btn>
+              <v-btn flat class="bg-lighterror text-error" @click="handleReset">Reset</v-btn>
 
               <v-btn flat class="ml-4" type="submit" color="secondary">Apply</v-btn>
             </v-col>
@@ -90,6 +92,8 @@
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
+
+  <slot name="filtered" />
 </template>
 
 <script lang="ts" setup>
@@ -125,16 +129,16 @@ const emit = defineEmits<UserFiltersEvents>();
 
 const props = defineProps<UserFiltersProps>();
 
-const { handleSubmit, setValues } = useForm<FindAllUsersParamsData>({
+const { handleSubmit, setValues, handleReset } = useForm<FindAllUsersParamsData>({
   validationSchema,
   initialValues: {
-    email: props.filters?.email ?? "",
-    username: props.filters?.username ?? "",
-    lastName: props.filters?.lastName ?? "",
-    firstName: props.filters?.firstName ?? "",
-    phoneNumber: props.filters?.phoneNumber ?? "",
-    createdDate: props.filters?.createdDate ?? "",
-    includeDeleted: props.filters?.includeDeleted ?? false,
+    email: "",
+    username: "",
+    lastName: "",
+    firstName: "",
+    phoneNumber: "",
+    createdDate: "",
+    includeDeleted: false,
   },
 });
 
@@ -146,14 +150,14 @@ const phoneNumber = useField<string>("phoneNumber");
 const createdDate = useField<string>("createdDate");
 const includeDeleted = useField<boolean>("includeDeleted");
 
-const submit = handleSubmit((values) => {
+const handleFormSubmit = handleSubmit((values) => {
   emit("submit", values);
 });
 
 watch(
   () => props.filters,
   (filters) => setValues(filters, false),
-  { deep: true }
+  { deep: true, immediate: true }
 );
 </script>
 

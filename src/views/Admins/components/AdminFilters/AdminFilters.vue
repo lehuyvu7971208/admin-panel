@@ -1,7 +1,9 @@
 <template>
   <v-expansion-panels>
     <v-expansion-panel elevation="10">
-      <v-expansion-panel-title color="white" class="text-h6"> <v-icon icon="mdi-filter-variant" class="mr-3" /> Filter </v-expansion-panel-title>
+      <v-expansion-panel-title color="white" class="text-h6" static>
+        <v-icon icon="mdi-filter-variant" class="mr-3" /> Filter
+      </v-expansion-panel-title>
 
       <v-expansion-panel-text>
         <form class="py-2" @submit="handleFormSumit">
@@ -28,7 +30,7 @@
 
           <v-row>
             <v-col class="text-right">
-              <v-btn flat class="bg-lighterror text-error">Reset</v-btn>
+              <v-btn flat class="bg-lighterror text-error" @click="handleReset">Reset</v-btn>
 
               <v-btn flat class="ml-4" type="submit" color="secondary">Apply</v-btn>
             </v-col>
@@ -37,6 +39,8 @@
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
+
+  <slot name="filtered" />
 </template>
 
 <script lang="ts" setup>
@@ -75,12 +79,13 @@ type AdminFiltersEvent = {
 
 const emit = defineEmits<AdminFiltersEvent>();
 
-const { handleSubmit, setValues } = useForm<FindAllAdminsParamsData>({
+const { handleSubmit, setValues, handleReset } = useForm<FindAllAdminsParamsData>({
   validationSchema,
   initialValues: {
     type: "",
     state: "",
     username: "",
+    includeDeleted: false,
   },
 });
 
@@ -90,16 +95,8 @@ const handleFormSumit = handleSubmit((values) => {
 
 watch(
   () => props.filters,
-  () => {
-    setValues({
-      type: props.filters?.type,
-      state: props.filters?.state,
-      username: props.filters?.username,
-    });
-  },
-  {
-    deep: true,
-  }
+  (filters) => setValues(filters, false),
+  { deep: true, immediate: true }
 );
 </script>
 

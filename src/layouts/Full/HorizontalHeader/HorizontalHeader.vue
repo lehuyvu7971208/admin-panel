@@ -1,80 +1,79 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
 // Stores
-import { useCustomizerStore } from '@/store/customizer';
+import { useCustomizerStore } from "@/store/customizer";
 
 // Icon Imports
-import { Menu2Icon, ShoppingCartIcon } from 'vue-tabler-icons';
+import { Menu2Icon, ShoppingCartIcon } from "vue-tabler-icons";
 
 // Components
-import Logo from '../logo/Logo.vue';
-import ProfileDD from '../VerticalHeader/ProfileDD.vue';
-import Searchbar from '../VerticalHeader/Searchbar.vue';
-import LanguageDD from '../VerticalHeader/LanguageDD.vue';
-import NotificationDD from '../VerticalHeader/NotificationDD.vue';
-import RightMobileSidebar from '../VerticalHeader/RightMobileSidebar.vue';
+import Logo from "../Logo/Logo.vue";
+import ProfileDD from "../VerticalHeader/ProfileDD.vue";
+import Searchbar from "../VerticalHeader/Searchbar.vue";
+import LanguageDD from "../VerticalHeader/LanguageDD.vue";
+import NotificationDD from "../VerticalHeader/NotificationDD.vue";
+import RightMobileSidebar from "../VerticalHeader/RightMobileSidebar.vue";
 
 const customizer = useCustomizerStore();
 
 const appsdrawer = ref(false);
 
 const priority = computed(() => {
-    return ref(customizer.horizontalLayout ? 0 : 0);
+  return ref(customizer.horizontalLayout ? 0 : 0);
 });
-
 </script>
 <template>
-    <v-app-bar elevation="0" :priority="priority" height="64" class="horizontal-header" color="background">
-        <div :class="customizer.boxed ? 'maxWidth v-toolbar__content px-lg-0 px-4' : 'v-toolbar__content px-6'">
-            <div class="hidden-md-and-down">
-                <Logo />
-            </div>
-            <v-btn class="hidden-md-and-up" icon variant="text" @click.stop="customizer.setSidebarDrawer" size="small">
-            <Menu2Icon size="25" />
-        </v-btn>
-            <!-- ------------------------------------------------>
-            <!-- Search part -->
-            <!-- ------------------------------------------------>
-           
-            <Searchbar />
-        
-            <!---/Search part -->
-            <v-spacer />
-            <!-- ---------------------------------------------- -->
-            <!---right part -->
-            <!-- ---------------------------------------------- -->
+  <v-app-bar elevation="0" :priority="priority" height="64" class="horizontal-header" color="background">
+    <div :class="customizer.boxed ? 'maxWidth v-toolbar__content px-lg-0 px-4' : 'v-toolbar__content px-6'">
+      <div class="hidden-md-and-down">
+        <Logo />
+      </div>
+      <v-btn class="hidden-md-and-up" icon variant="text" @click.stop="customizer.setSidebarDrawer" size="small">
+        <Menu2Icon size="25" />
+      </v-btn>
+      <!-- ------------------------------------------------>
+      <!-- Search part -->
+      <!-- ------------------------------------------------>
 
-            <!-- ---------------------------------------------- -->
-            <!-- translate -->
-            <!-- ---------------------------------------------- -->
-            <LanguageDD />
+      <Searchbar />
 
-            <!-- ---------------------------------------------- -->
-            <!-- Notification -->
-            <!-- ---------------------------------------------- -->
+      <!---/Search part -->
+      <v-spacer />
+      <!-- ---------------------------------------------- -->
+      <!---right part -->
+      <!-- ---------------------------------------------- -->
 
-            <NotificationDD />
+      <!-- ---------------------------------------------- -->
+      <!-- translate -->
+      <!-- ---------------------------------------------- -->
+      <LanguageDD />
 
-            <!-- ---------------------------------------------- -->
-            <!-- ShoppingCart -->
-            <!-- ---------------------------------------------- -->
-            <v-btn icon variant="text" color="primary" to="">
-            <v-badge  color="error" :content="0">
-                <ShoppingCartIcon stroke-width="1.5" size="24" />
-            </v-badge>
-        </v-btn>
+      <!-- ---------------------------------------------- -->
+      <!-- Notification -->
+      <!-- ---------------------------------------------- -->
 
-            <!-- ---------------------------------------------- -->
-            <!-- User Profile -->
-            <!-- ---------------------------------------------- -->
-            <div class="ml-3 ">
-                <ProfileDD />
-            </div>
-        </div>
-    </v-app-bar>
+      <NotificationDD />
 
-    <v-navigation-drawer v-model="appsdrawer" location="right" temporary>
-        <RightMobileSidebar />
-    </v-navigation-drawer>
+      <!-- ---------------------------------------------- -->
+      <!-- ShoppingCart -->
+      <!-- ---------------------------------------------- -->
+      <v-btn icon variant="text" color="primary" to="">
+        <v-badge color="error" :content="0">
+          <ShoppingCartIcon stroke-width="1.5" size="24" />
+        </v-badge>
+      </v-btn>
+
+      <!-- ---------------------------------------------- -->
+      <!-- User Profile -->
+      <!-- ---------------------------------------------- -->
+      <div class="ml-3">
+        <ProfileDD />
+      </div>
+    </div>
+  </v-app-bar>
+
+  <v-navigation-drawer v-model="appsdrawer" location="right" temporary>
+    <RightMobileSidebar />
+  </v-navigation-drawer>
 </template>

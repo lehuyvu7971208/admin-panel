@@ -3,6 +3,8 @@
  *
  * Bootstraps Vuetify and other plugins then mounts the App`
  */
+// Utilities
+import 'reflect-metadata';
 
 // Components
 import App from './App.vue';

@@ -1,0 +1,14 @@
+.business-form {
+  :deep(.v-window) {
+    margin: 0px;
+  }
+
+  :deep(.v-stepper-header) {
+    box-shadow: none;
+
+    .v-divider {
+      opacity: 1;
+      border-width: 1px 0 0;
+    }
+  }
+}

@@ -9,7 +9,7 @@ import { useHttpStore } from "@/modules/http/store/http";
 import { authApi, SignInRequestData } from "../api/auth";
 
 // Models
-import Admin from "@/modules/admins/models/admin";
+import Admin from "@/models/admin";
 
 type AuthState = {
   admin?: Admin | null;

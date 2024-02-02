@@ -1,20 +1,18 @@
 <template>
   <div class="admin-management">
-    <base-breadcrumb title="Admin Management" :breadcrumbs="breadcrumbs" />
-
-    <v-row class="mb-3">
-      <v-col>
-        <admin-filters :filters="filters" @submit="handleFilterChange" />
-      </v-col>
-    </v-row>
-
-    <v-row class="mb-3">
-      <v-col>
-        <admin-filtered :filters="filters" @change="handleFilterChange" />
-      </v-col>
-
-      <v-col sm="2" class="text-right">
+    <base-breadcrumb title="Admin Management" :breadcrumbs="breadcrumbs">
+      <template #actions>
         <admin-action ref="adminActionRef" :value="admin" @submit="handleAdminActionSubmit" @hide="handleAdminActionHide" />
+      </template>
+    </base-breadcrumb>
+
+    <v-row class="mb-3">
+      <v-col>
+        <admin-filters :filters="filters" @submit="handleFilterChange">
+          <template #filtered>
+            <admin-filtered :filters="filters" class="mt-6" @change="handleFilterChange" />
+          </template>
+        </admin-filters>
       </v-col>
     </v-row>
 
@@ -39,7 +37,7 @@ import { useDialog } from "@/modules/dialog/utils";
 import { onSearch, useSearch } from "@/libs/utils/search";
 
 // Models
-import Admin from "@/modules/admins/models/admin";
+import Admin from "@/models/admin";
 
 // Apis
 import { FindAllAdminsParamsData } from "@/modules/admins/api/admins";

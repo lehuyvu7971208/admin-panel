@@ -1,7 +1,9 @@
 <template>
-  <v-dialog max-width="600" v-model="isDialogShown" persistent>
+  <v-dialog max-width="600" v-model="isDialogShown" persistent class="align-start">
     <template #activator="{ props }">
-      <v-btn color="primary" v-bind="props" flat> <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>Add Contact </v-btn>
+      <slot name="activator" v-bind="{ props }">
+        <v-btn color="primary" v-bind="props" flat> <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>Add User</v-btn>
+      </slot>
     </template>
 
     <v-card>
@@ -95,40 +97,25 @@
 
 <script lang="ts" setup>
 // Utilities
-import * as Yup from "yup";
 import { useForm } from "vee-validate";
 import { ref, watch, computed } from "vue";
 
 // Models
-import User from "@/modules/users/models/user";
+import User from "@/models/user";
 
 // Components
 import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
 import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
 import VPasswordValidateField from "@/components/shared/VPasswordValidateField/VPasswordValidateField.vue";
 
+// Validation
+import { createUserValidationSchema } from "@/libs/validation/user";
+
 // Constant
 import { SUPPORTED_REGIONS } from "@/libs/constant";
 import { USER_STATE } from "@/modules/users/constant";
 
 const isDialogShown = ref<boolean>(false);
-
-const validationSchema = Yup.object({
-  id: Yup.number(),
-  username: Yup.string().required(),
-  email: Yup.string().email().required(),
-
-  password: Yup.string().when("id", {
-    is: (value: number | string) => !value,
-    then: (schema) => schema.required(),
-  }),
-
-  lastName: Yup.string(),
-  firstName: Yup.string(),
-
-  phoneNumber: Yup.string().required(),
-  phoneRegion: Yup.string().required(),
-}).required();
 
 export type FormValues = {
   id: number;
@@ -158,7 +145,6 @@ export type UserActionEvents = {
 const emit = defineEmits<UserActionEvents>();
 
 const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
-  validationSchema,
   initialValues: {
     id: 0,
     email: "",
@@ -170,6 +156,7 @@ const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
     phoneRegion: "84",
     state: USER_STATE.UNACTIVE,
   },
+  validationSchema: createUserValidationSchema,
 });
 
 const dialogTitle = computed<string>(() => {

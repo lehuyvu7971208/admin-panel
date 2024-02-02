@@ -2,7 +2,7 @@
 import { AxiosInstance, AxiosResponse } from "axios";
 
 // Models
-import { UserState } from "../models/user";
+import { UserState } from "../../../models/user";
 
 export type FindAllUsersParamsData = {
   limit?: number;
@@ -52,6 +52,14 @@ export type PatchUserResponseData = {
   user: any;
 };
 
+export type SearchUsersRequestData = {
+  keyword: string;
+};
+
+export type SearchUsersResponseData = {
+  users: Array<any>;
+};
+
 export const userApi = (http: AxiosInstance) => ({
   async findUser(id: number | string): Promise<AxiosResponse<FindUserResponseData>> {
     return http.get(`/users/${id}`);
@@ -61,6 +69,10 @@ export const userApi = (http: AxiosInstance) => ({
     return http.get("/users", {
       params,
     });
+  },
+
+  async searchUsers(data: SearchUsersRequestData): Promise<AxiosResponse<SearchUsersResponseData>> {
+    return http.post("/users/search", data);
   },
 
   async createUser(data: CreateUserRequestData): Promise<AxiosResponse<CreateUserResponseData>> {

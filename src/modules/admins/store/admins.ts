@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { AxiosInstance } from "axios";
 
 // Models
-import Admin from "../models/admin";
+import Admin from "../../../models/admin";
 
 // Store
 import { useHttpStore } from "@/modules/http/store/http";

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="500" persistent v-model="isDialogShown">
+  <v-dialog max-width="500" persistent v-model="isDialogShown" class="align-start">
     <template #activator="{ props }">
       <v-btn color="primary" v-bind="props" flat> <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>Add Admin </v-btn>
     </template>
@@ -53,31 +53,24 @@
 
 <script lang="ts" setup>
 // Utilities
-import * as Yup from "yup";
 import { useForm } from "vee-validate";
 import { ref, watch, computed } from "vue";
 
 // Models
-import Admin from "@/modules/admins/models/admin";
+import Admin from "@/models/admin";
 
 // Components shared
 import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
 import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
 import VPasswordValidateField from "@/components/shared/VPasswordValidateField/VPasswordValidateField.vue";
 
+// Validation
+import { createAdminValidationSchema } from "@/libs/validation/admin";
+
 // Constants
-import { ADMIN_ROLE, ADMIN_ROLE_OPTIONS, ADMIN_STATE, DEFAULT_ADMIN_ROLE } from "@/modules/admins/constant";
+import { ADMIN_ROLE_OPTIONS, ADMIN_STATE, DEFAULT_ADMIN_ROLE } from "@/modules/admins/constant";
 
 const isDialogShown = ref<boolean>(false);
-
-const validationSchema = Yup.object({
-  id: Yup.number(),
-
-  password: Yup.string().required(),
-  username: Yup.string().required(),
-
-  type: Yup.string().oneOf(Object.values(ADMIN_ROLE)).required(),
-});
 
 export type FormValues = {
   id?: number;
@@ -102,8 +95,6 @@ export type AdminActionEvents = {
 const emit = defineEmits<AdminActionEvents>();
 
 const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
-  validationSchema,
-
   initialValues: {
     id: 0,
     username: "",
@@ -111,7 +102,8 @@ const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
     type: "manager",
     state: ADMIN_STATE.UNACTIVE,
   },
-}); 
+  validationSchema: createAdminValidationSchema,
+});
 
 const dialogTitle = computed<string>(() => {
   return values.id ? "Edit Admin" : "Add Admin";

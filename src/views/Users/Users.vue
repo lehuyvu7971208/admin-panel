@@ -1,20 +1,18 @@
 <template>
   <div class="user-management">
-    <base-breadcrumb title="User Management" :breadcrumbs="breadcrumbs" />
-
-    <v-row class="mb-3">
-      <v-col>
-        <user-filters :filters="filters" @submit="handleFilterChange" />
-      </v-col>
-    </v-row>
-
-    <v-row class="mb-3">
-      <v-col>
-        <user-filtered :filters="filters" @change="handleFilterChange" />
-      </v-col>
-
-      <v-col cols="2" class="text-right">
+    <base-breadcrumb title="User Management" :breadcrumbs="breadcrumbs">
+      <template #actions>
         <user-action ref="userActionRef" :value="user" @submit="handleUserActionSubmmit" @hide="handleUserActionHide" />
+      </template>
+    </base-breadcrumb>
+
+    <v-row class="mb-3">
+      <v-col>
+        <user-filters :filters="filters" @submit="handleFilterChange">
+          <template #filtered>
+            <user-filtered :filters="filters" class="mt-6" @change="handleFilterChange" />
+          </template>
+        </user-filters>
       </v-col>
     </v-row>
 
@@ -49,10 +47,10 @@ import Pagination from "@/components/shared/Pagination/Pagination.vue";
 import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue";
 
 // Models
-import User from "@/modules/users/models/user";
+import User from "@/models/user";
 
 // Apis
-import { FindAllUsersParamsData } from "@/api/users";
+import { FindAllUsersParamsData } from "@/modules/users/api/users";
 
 // Store
 import { useUserManagementStore } from "./store/userManagement";

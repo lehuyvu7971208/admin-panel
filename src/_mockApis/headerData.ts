@@ -1,7 +1,5 @@
 // project imports
-import mock from './mockAdapter';
 
-import type { notificationType, profileType, languageType, appsLinkType, quickLinksType,searchType } from '@/types/HeaderTypes';
 // 
 // Notification
 // 
@@ -11,7 +9,7 @@ import user3 from '@/assets/images/profile/user-3.jpg';
 import user4 from '@/assets/images/profile/user-4.jpg';
 import user5 from '@/assets/images/profile/user-5.jpg';
 
-const notifications:notificationType[] = [
+const notifications:any[] = [
     {
         avatar: user1,
         title: 'Roman Joined the Team!',
@@ -50,7 +48,7 @@ const notifications:notificationType[] = [
 import proUser1 from '@/assets/images/svgs/icon-account.svg';
 import proUser2 from '@/assets/images/svgs/icon-inbox.svg';
 import proUser3 from '@/assets/images/svgs/icon-tasks.svg';
-const profileDD: profileType[] = [
+const profileDD: any[] = [
     {
         avatar: proUser1,
         title: 'My Profile',
@@ -78,7 +76,7 @@ import flag1 from '@/assets/images/flag/icon-flag-en.svg';
 import flag2 from '@/assets/images/flag/icon-flag-fr.svg';
 import flag3 from '@/assets/images/flag/icon-flag-ro.svg';
 import flag4 from '@/assets/images/flag/icon-flag-zh.svg';
-const languageDD: languageType[] = [
+const languageDD: any[] = [
     { title: 'English', subtext: 'UK', value: 'en', avatar: flag1 },
     { title: 'français', subtext: 'French', value: 'fr', avatar: flag2 },
     { title: 'عربي', subtext: 'Arbic', value: 'ro', avatar: flag3 },
@@ -96,7 +94,7 @@ import img5 from '@/assets/images/svgs/icon-dd-mobile.svg';
 import img6 from '@/assets/images/svgs/icon-dd-lifebuoy.svg';
 import img7 from '@/assets/images/svgs/icon-dd-message-box.svg';
 import img8 from '@/assets/images/svgs/icon-dd-application.svg';
-const appsLink: appsLinkType[] = [
+const appsLink: any[] = [
     {
         avatar: img1,
         title: 'Chat Application',
@@ -150,7 +148,7 @@ const appsLink: appsLinkType[] = [
 // 
 // Quick Links
 // 
-const quickLink: quickLinksType[] = [
+const quickLink: any[] = [
     {
         title: 'Pricing Page',
         href: '/pages/pricing'
@@ -188,7 +186,7 @@ const quickLink: quickLinksType[] = [
 // 
 // Search Data
 // 
-const searchSugg: searchType[] = [
+const searchSugg: any[] = [
     {
         title: 'Modern',
         href: '/dashboards/modern'
