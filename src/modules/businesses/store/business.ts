@@ -22,6 +22,9 @@ export type BusinessGetters = {
 export type BusinessActions = {
   resetBusiness(): Promise<void>;
   saveBusiness(): Promise<Business>;
+  updateBusiness(): Promise<Business>;
+  deleteBusiness(id: number): Promise<void>;
+  getBusinessById(id: number): Promise<void>;
   setBusiness(business: Business): Promise<void>;
 };
 
@@ -69,6 +72,29 @@ export const useBusinessStore = defineStore<"business", BusinessState, BusinessG
       this.setBusiness(business);
 
       return business;
+    },
+
+    async getBusinessById(id) {
+      const response = await businessesApi(this.http).findBusiness(id);
+      this.setBusiness(Business.build(response.data.business) as Business);
+    },
+
+    async updateBusiness() {
+      const response = await businessesApi(this.http).updateBusiness(this.target.id, {
+        name: this.target.name,
+        type: this.target.type,
+        owner: this.target.owner,
+        state: this.target.state,
+      });
+
+      const business = Business.build(response.data.business) as Business;
+      this.setBusiness(business);
+
+      return business;
+    },
+
+    async deleteBusiness(id: number) {
+      await businessesApi(this.http).deleteBusiness(id);
     },
   },
 });

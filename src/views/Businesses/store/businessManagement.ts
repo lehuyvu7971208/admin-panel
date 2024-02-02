@@ -18,6 +18,9 @@ export type BusinessManagementStoreSetup = {
 
   resetBusiness(): Promise<void>;
   saveBusiness(): Promise<Business>;
+  updateBusiness(): Promise<Business>;
+  deleteBusiness(id: number): Promise<void>;
+  getBusinessById(id: number): Promise<void>;
   setBusiness(business: Business): Promise<void>;
 
   /**@description Businesses Store */
@@ -47,6 +50,9 @@ export const useBusinessManagementStore = defineStore<"businessManagement", Busi
     setBusiness: businessStore.setBusiness,
     saveBusiness: businessStore.saveBusiness,
     resetBusiness: businessStore.resetBusiness,
+    updateBusiness: businessStore.updateBusiness,
+    deleteBusiness: businessStore.deleteBusiness,
+    getBusinessById: businessStore.getBusinessById,
 
     filters,
     businesses,

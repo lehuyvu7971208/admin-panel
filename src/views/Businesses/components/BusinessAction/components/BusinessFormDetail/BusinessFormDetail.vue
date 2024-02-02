@@ -23,25 +23,27 @@
           <v-col cols="12" class="py-0">
             <v-label class="font-weight-medium mb-2">State</v-label>
             <v-col cols="12" class="py-0">
-              <v-switch :model-value="isBusinessActive" color="primary" label="Active" hide-details />
+              <v-switch v-model:model-value="isBusinessActive" color="primary" label="Active" hide-details />
             </v-col>
           </v-col>
         </v-row>
       </v-card-text>
 
-      <v-card-text>
-        <v-row>
-          <v-col sm="6" class="text-left">
-            <v-btn flat class="bg-lighterror text-error" @click="handleCancelClick">Cancel</v-btn>
-          </v-col>
+      <slot name="actions">
+        <v-card-text>
+          <v-row>
+            <v-col sm="6" class="text-left">
+              <v-btn flat class="bg-lighterror text-error" @click="handleCancelClick">Cancel</v-btn>
+            </v-col>
 
-          <v-col sm="6" class="text-right">
-            <v-btn color="white" @click="handleBackClick">Back</v-btn>
+            <v-col sm="6" class="text-right">
+              <v-btn color="white" @click="handleBackClick">Back</v-btn>
 
-            <v-btn flat type="submit" color="secondary" class="ml-4">Complete</v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
+              <v-btn flat type="submit" color="secondary" class="ml-4">Complete</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </slot>
     </v-card>
   </form>
 </template>
@@ -51,6 +53,9 @@
 import { computed } from "vue";
 import { useForm } from "vee-validate";
 
+// Models
+import Business from "@/models/business";
+
 // Components shared
 import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
 import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
@@ -59,7 +64,13 @@ import VTextValidateField from "@/components/shared/VTextValidateField/VTextVali
 import { createBusinessValidationSchema } from "@/libs/validation/business";
 
 // Constants
-import { BUSINESS_STATE, BUSINESS_TYPE, BUSINESS_TYPE_OPTIONS } from "@/modules/businesses/constant";
+import { BUSINESS_STATE, BUSINESS_TYPE_OPTIONS } from "@/modules/businesses/constant";
+
+export type BusinessFormDetailProps = {
+  value: Business;
+};
+
+const props = defineProps<BusinessFormDetailProps>();
 
 export type FormValues = {
   id?: number;
@@ -71,11 +82,11 @@ export type FormValues = {
 
 const { values, handleSubmit, setValues } = useForm<FormValues>({
   initialValues: {
-    id: 0,
-    name: "",
-    owner: "",
-    type: BUSINESS_TYPE.NONE,
-    state: BUSINESS_STATE.ACTIVE,
+    id: props.value.id,
+    name: props.value.name,
+    type: props.value.type,
+    owner: props.value.owner,
+    state: props.value.state,
   },
   validationSchema: createBusinessValidationSchema,
 });

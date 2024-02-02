@@ -1,6 +1,7 @@
 // Utilities
 import { defineStore } from "pinia";
 import { AxiosInstance } from "axios";
+import { ComputedRef, Ref, computed, ref } from "vue";
 
 // Models
 import User from "@/models/user";
@@ -11,93 +12,139 @@ import { userApi } from "@/modules/users/api/users";
 
 // Store
 import { useHttpStore } from "@/modules/http/store/http";
+import { useUserStore } from "@/modules/users/store/user";
+import { businessesApi } from "@/modules/businesses/api/businesses";
 
-export type BusinessActionState = {
-  business: Business;
+export type BusinessActionStoreSetup = {
+  /**@description User Store */
+  user: ComputedRef<User>;
 
-  searchKeyword: string;
-  searchedUsers: Array<any>;
-};
-
-export type BusinessActionGetters = {
-  http(): AxiosInstance;
-};
-
-export type BusinessActionActions = {
+  saveUser(): Promise<User>;
+  resetUser(): Promise<void>;
+  updateUser(): Promise<User>;
   setUser(user: User): Promise<void>;
+  deleteUser(id: number): Promise<void>;
+  getUserById(id: number): Promise<void>;
+
+  /**@description Business Store */
+  business: Ref<Business>;
+
+  searchKeyword: Ref<string>;
+  searchedUsers: Ref<Array<any>>;
+
+  http: ComputedRef<AxiosInstance>;
+
+  reset(): Promise<void>;
+
+  setBusinessUser(user: User): Promise<void>;
   setBusiness(business: Business): Promise<void>;
 
   getSearchUsers(): Promise<void>;
   getSearchedUser(id: number): Promise<User>;
+  getBusinessById(id: number): Promise<void>;
   setSearchKeyword(keyword: string): Promise<void>;
   setSearchedUsers(users: Array<any>): Promise<void>;
 };
 
-export const useBusinessActionStore = defineStore<"businessAction", BusinessActionState, BusinessActionGetters, BusinessActionActions>(
-  "businessAction",
-  {
-    state: () => ({
-      searchKeyword: "",
-      searchedUsers: [],
+export const useBusinessActionStore = defineStore<"businessAction", BusinessActionStoreSetup>("businessAction", () => {
+  /**@description User Store */
+  const userStore = useUserStore();
+  const user = computed(() => userStore.target);
 
-      business: new Business(),
-    }),
+  /**@description Business Store */
+  const searchKeyword = ref<string>("");
+  const searchedUsers = ref<Array<any>>([]);
 
-    getters: {
-      http() {
-        return useHttpStore().instance;
-      },
-    },
+  const business = ref<Business>(new Business());
 
-    actions: {
-      async setBusiness(business) {
-        this.business.id = business.id;
-        this.business.name = business.name;
-        this.business.type = business.type;
-        this.business.owner = business.owner;
-        this.business.state = business.state;
+  const http = computed<AxiosInstance>(() => {
+    return useHttpStore().instance;
+  });
 
-        if (business.user) {
-          this.setUser(business.user);
-        }
-      },
+  const reset = async () => {
+    searchKeyword.value = "";
+    searchedUsers.value = [];
 
-      async setUser(user) {
-        this.business.user.id = user.id;
-        this.business.user.email = user.email;
-        this.business.user.state = user.state;
-        this.business.user.username = user.username;
-        this.business.user.password = user.password;
-        this.business.user.lastName = user.lastName;
-        this.business.user.firstName = user.firstName;
-        this.business.user.phoneNumber = user.phoneNumber;
-        this.business.user.phoneRegion = user.phoneRegion;
-        this.business.user.createdDate = user.createdDate;
-        this.business.user.updatedDate = user.updatedDate;
-        this.business.user.deletedDate = user.deletedDate;
-      },
+    business.value = new Business();
+  };
 
-      async getSearchUsers() {
-        const response = await userApi(this.http).searchUsers({
-          keyword: this.searchKeyword,
-        });
+  const setBusiness = async (data: Business) => {
+    business.value.id = data.id;
+    business.value.name = data.name;
+    business.value.type = data.type;
+    business.value.owner = data.owner;
+    business.value.state = data.state;
 
-        this.setSearchedUsers(response.data.users);
-      },
+    if (data.user) {
+      setBusinessUser(data.user);
+    }
+  };
 
-      async setSearchedUsers(users: Array<any>) {
-        this.searchedUsers = users;
-      },
+  const setBusinessUser = async (data: User) => {
+    business.value.user.id = data.id;
+    business.value.user.email = data.email;
+    business.value.user.state = data.state;
+    business.value.user.username = data.username;
+    business.value.user.password = data.password;
+    business.value.user.lastName = data.lastName;
+    business.value.user.firstName = data.firstName;
+    business.value.user.phoneNumber = data.phoneNumber;
+    business.value.user.phoneRegion = data.phoneRegion;
+    business.value.user.createdDate = data.createdDate;
+    business.value.user.updatedDate = data.updatedDate;
+    business.value.user.deletedDate = data.deletedDate;
+  };
 
-      async getSearchedUser(id: number) {
-        const response = await userApi(this.http).findUser(id);
+  const getSearchUsers = async () => {
+    const response = await userApi(http.value).searchUsers({
+      keyword: searchKeyword.value,
+    });
 
-        return User.build(response.data.user) as User;
-      },
+    setSearchedUsers(response.data.users);
+  };
 
-      async setSearchKeyword(keyword: string) {
-        this.searchKeyword = keyword;
-      },
-    },
-  }
-);
+  const setSearchedUsers = async (users: Array<any>) => {
+    searchedUsers.value = users;
+  };
+
+  const getSearchedUser = async (id: number) => {
+    const response = await userApi(http.value).findUser(id);
+
+    return User.build(response.data.user) as User;
+  };
+
+  const setSearchKeyword = async (keyword: string) => {
+    searchKeyword.value = keyword;
+  };
+
+  const getBusinessById = async (id: number) => {
+    const response = await businessesApi(http.value).findBusiness(id);
+
+    setBusiness(Business.build(response.data.business) as Business);
+  };
+
+  return {
+    user,
+    setUser: userStore.setUser,
+    saveUser: userStore.saveUser,
+    resetUser: userStore.resetUser,
+    updateUser: userStore.updateUser,
+    deleteUser: userStore.deleteUser,
+    getUserById: userStore.getUserById,
+
+    http,
+
+    business,
+    searchedUsers,
+    searchKeyword,
+
+    reset,
+    setBusiness,
+    getSearchUsers,
+    setBusinessUser,
+    getSearchedUser,
+    getBusinessById,
+    setSearchKeyword,
+    setSearchedUsers,
+  };
+});

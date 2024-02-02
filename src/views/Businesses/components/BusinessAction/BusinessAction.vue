@@ -9,7 +9,12 @@
         <span class="title text-white">{{ dialogTitle }}</span>
       </v-card-title>
 
-      <business-form @cancel="handleCancelClick" @submit="$emit('submit', $event)" />
+      <template v-if="isBusinessEditing">
+        <business-form-edit :business="business" @cancel="handleCancelClick" @submit="$emit('submit', $event)" />
+      </template>
+      <template v-else>
+        <business-form-add @cancel="handleCancelClick" @submit="$emit('submit', $event)" />
+      </template>
     </v-card>
   </v-dialog>
 </template>
@@ -25,7 +30,8 @@ import Business from "@/models/business";
 import { useBusinessActionStore } from "./store/businessAction";
 
 // Components
-import BusinessForm from "./components/BusinessForm/BusinessForm.vue";
+import BusinessFormAdd from "./components/BusinessFormAdd/BusinessFormAdd.vue";
+import BusinessFormEdit from "./components/BusinessFormEdit/BusinessFormEdit.vue";
 
 const isDialogShown = ref<boolean>();
 const businessActionStore = useBusinessActionStore();
@@ -35,16 +41,26 @@ const dialogTitle = computed<string>(() => {
 });
 
 export type BusinessActionProps = {
-  business: Business;
+  value: Business;
 };
 
 const props = defineProps<BusinessActionProps>();
 
 export type BusinessActionEvents = {
+  (event: "hide"): void;
+  (event: "show"): void;
   (event: "submit", values: any): void;
 };
 
-defineEmits<BusinessActionEvents>();
+const emit = defineEmits<BusinessActionEvents>();
+
+const business = computed<Business>(() => {
+  return businessActionStore.business;
+});
+
+const isBusinessEditing = computed<boolean>(() => {
+  return !!businessActionStore.business.id;
+});
 
 const handleCancelClick = () => {
   isDialogShown.value = false;
@@ -62,11 +78,13 @@ defineExpose<BusinessActionExpose>({
 
 watch(isDialogShown, (isDialogShown) => {
   if (isDialogShown) {
-    businessActionStore.setBusiness(props.business);
+    emit("show");
+
+    businessActionStore.setBusiness(props.value);
   } else {
-    businessActionStore.setSearchedUsers([]);
-    businessActionStore.setSearchKeyword("");
-    businessActionStore.setBusiness(new Business());
+    emit("hide");
+
+    businessActionStore.reset();
   }
 });
 </script>

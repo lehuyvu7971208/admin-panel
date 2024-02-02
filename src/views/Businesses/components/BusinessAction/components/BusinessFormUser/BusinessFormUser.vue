@@ -15,7 +15,13 @@
     </v-card-text>
   </v-card>
 
-  <component :is="userFormComponent" @cancel="$emit('cancel')" @submit="handleUserFormSubmit" />
+  <template v-if="isUserCreating">
+    <business-form-user-create @cancel="$emit('cancel')" @submit="handleCreateUserFormSubmit" />
+  </template>
+
+  <template v-if="isUserExisted">
+    <business-form-user-exist @cancel="$emit('cancel')" @submit="handleExistUserFormSubmit" />
+  </template>
 </template>
 
 <script lang="ts" setup>
@@ -28,6 +34,12 @@ import BusinessFormUserCreate, { FormValues as CreateUserFormValue } from "../Bu
 
 // Store
 import { useBusinessActionStore } from "../../store/businessAction";
+
+// Constants
+const SELECT_USER_TYPE = {
+  EXIST: "EXIST",
+  CREATE: "CREATE",
+};
 
 export type FormValues = {
   id: number;
@@ -42,24 +54,15 @@ export type FormValues = {
   confirmPassword: string;
 };
 
-// Constants
-const SELECT_USER_TYPE = {
-  EXIST: "EXIST",
-  CREATE: "CREATE",
-};
-
 const businessActionStore = useBusinessActionStore();
 const userType = ref<string>(SELECT_USER_TYPE.CREATE);
 
-const userFormComponent = computed(() => {
-  if (userType.value === SELECT_USER_TYPE.CREATE) {
-    return BusinessFormUserCreate;
-  }
+const isUserCreating = computed<boolean>(() => {
+  return userType.value === SELECT_USER_TYPE.CREATE;
+});
 
-  if (userType.value === SELECT_USER_TYPE.EXIST) {
-    return BusinessFormUserExist;
-  }
-  return null;
+const isUserExisted = computed<boolean>(() => {
+  return userType.value === SELECT_USER_TYPE.EXIST;
 });
 
 export type BusinessFormUserEvents = {
@@ -68,14 +71,6 @@ export type BusinessFormUserEvents = {
 };
 
 const emit = defineEmits<BusinessFormUserEvents>();
-
-const handleUserFormSubmit = (data: any) => {
-  if (userType.value === SELECT_USER_TYPE.EXIST) {
-    handleExistUserFormSubmit(data);
-  } else if (userType.value === SELECT_USER_TYPE.CREATE) {
-    handleCreateUserFormSubmit(data);
-  }
-};
 
 const handleExistUserFormSubmit = async (id: number) => {
   const user = await businessActionStore.getSearchedUser(id);

@@ -13,7 +13,7 @@
         <v-stepper-window-item value="1">
           <v-row class="justify-center">
             <v-col sm="8">
-              <business-form-user :value="user" @cancel="$emit('cancel')" @submit="handleUserFormSubmit" />
+              <business-form-user @cancel="$emit('cancel')" @submit="handleUserFormSubmit" />
             </v-col>
           </v-row>
         </v-stepper-window-item>
@@ -21,7 +21,7 @@
         <v-stepper-window-item value="2">
           <v-row class="justify-center">
             <v-col sm="8">
-              <business-form-detail @cancel="$emit('cancel')" @back="handleBackClick" @submit="handleDetailFormSubmit" />
+              <business-form-detail :value="business" @cancel="$emit('cancel')" @back="handleBackClick" @submit="handleDetailFormSubmit" />
             </v-col>
           </v-row>
         </v-stepper-window-item>
@@ -39,6 +39,9 @@ import { useForm } from "vee-validate";
 // Components
 import BusinessFormUser, { FormValues as UserFormValues } from "../BusinessFormUser/BusinessFormUser.vue";
 import BusinessFormDetail, { FormValues as DetailFormValues } from "../BusinessFormDetail/BusinessFormDetail.vue";
+
+// Models
+import Business from "@/models/business";
 
 // Validation
 import { createUserValidationSchema } from "@/libs/validation/user";
@@ -81,7 +84,9 @@ const { values, handleSubmit, setValues } = useForm<FormValues>({
   },
 });
 
-const user = computed<UserFormValues>(() => values.user);
+const business = computed<Business>(() => {
+  return Business.build(values) as Business;
+});
 
 export type BusinessFormEvents = {
   (event: "cancel"): void;
@@ -113,5 +118,5 @@ const handleFormSubmit = handleSubmit((values) => {
 </script>
 
 <style lang="scss" scoped>
-@import "./BusinessForm.scss";
+@import "./BusinessFormAdd.scss";
 </style>

@@ -34,6 +34,17 @@ export type CreateBusinessResponseData = {
   business: any;
 };
 
+export type UpdateBusinessRequestData = {
+  name?: string;
+  type?: string;
+  owner?: string;
+  state?: string;
+};
+
+export type UpdateBusinessResponseData = {
+  business: any;
+};
+
 export const businessesApi = (http: AxiosInstance) => ({
   async findBusiness(id: number): Promise<AxiosResponse<FindBusinessResponseData>> {
     return http.get(`/businesses/${id}`);
@@ -48,4 +59,12 @@ export const businessesApi = (http: AxiosInstance) => ({
   async createBusiness(data: CreateBusinessRequestData): Promise<AxiosResponse<CreateBusinessResponseData>> {
     return http.post("/businesses", data);
   },
+
+  async updateBusiness(id: number, data: UpdateBusinessRequestData): Promise<AxiosResponse<UpdateBusinessResponseData>> {
+    return http.put(`/businesses/${id}`, data);
+  },
+
+  async deleteBusiness(id: number): Promise<AxiosResponse<any>> {
+    return http.delete(`/businesses/${id}`);
+  }
 });

@@ -2,7 +2,7 @@
   <div class="business-management">
     <base-breadcrumb title="Business Management" :breadcrumbs="breadcrumbs">
       <template #actions>
-        <business-action ref="businessActionRef" :business="business" @submit="handleBusinessActionSubmit" />
+        <business-action ref="businessActionRef" :value="business" @submit="handleBusinessActionSubmit" @hide="handleBusinessActionHide" />
       </template>
     </base-breadcrumb>
 
@@ -18,7 +18,7 @@
 
     <v-row class="mb-3">
       <v-col>
-        <business-table :businesses="businesses" />
+        <business-table :businesses="businesses" @edit="handleBusinessEdit" @delete="handleBusinessDelete" />
       </v-col>
     </v-row>
 
@@ -33,6 +33,7 @@
 <script lang="ts" setup>
 // Utilities
 import { ref, computed } from "vue";
+import { useDialog } from "@/modules/dialog/utils";
 import { onSearch, useSearch } from "@/libs/utils/search";
 
 // Components
@@ -54,6 +55,7 @@ import { FindAllBusinessesParamsData } from "@/modules/businesses/api/businesses
 // Store
 import { useBusinessManagementStore } from "./store/businessManagement";
 
+const dialog = useDialog();
 const businessActionRef = ref<BusinessActionExpose>();
 const businessManagementStore = useBusinessManagementStore();
 
@@ -96,13 +98,42 @@ const handleFilterChange = (filters: FindAllBusinessesParamsData): void => {
   search(filters);
 };
 
+const handleBusinessEdit = async (id: number) => {
+  await businessManagementStore.getBusinessById(id);
+
+  businessActionRef.value?.show();
+};
+
+const handleBusinessActionHide = () => {
+  businessManagementStore.resetBusiness();
+};
+
 const handleBusinessActionSubmit = async (values: any): Promise<void> => {
   const business = Business.build(values) as Business;
   businessManagementStore.setBusiness(business);
 
-  await businessManagementStore.saveBusiness();
+  if (business.id) {
+    await businessManagementStore.updateBusiness();
+  } else {
+    await businessManagementStore.saveBusiness();
+  }
 
   businessActionRef.value?.hide();
+
+  loadBusinessesByFilters();
+};
+
+const handleBusinessDelete = async (id: number): Promise<void> => {
+  dialog.addDialogConfirm({
+    title: "Warning",
+    text: "Are you sure to want to delete this business?",
+
+    onAgree: () => handleDeleteBusinessAgreed(id),
+  });
+};
+
+const handleDeleteBusinessAgreed = async (id: number): Promise<void> => {
+  await businessManagementStore.deleteBusiness(id);
 
   loadBusinessesByFilters();
 };

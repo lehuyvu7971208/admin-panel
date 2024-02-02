@@ -1,7 +1,9 @@
 <template>
   <v-dialog max-width="600" v-model="isDialogShown" persistent class="align-start">
     <template #activator="{ props }">
-      <v-btn color="primary" v-bind="props" flat> <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>Add User</v-btn>
+      <slot name="activator" v-bind="{ props }">
+        <v-btn color="primary" v-bind="props" flat> <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>Add User</v-btn>
+      </slot>
     </template>
 
     <v-card>
