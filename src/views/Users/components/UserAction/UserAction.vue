@@ -154,7 +154,7 @@ const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
     firstName: "",
     phoneNumber: "",
     phoneRegion: "84",
-    state: USER_STATE.UNACTIVE,
+    state: USER_STATE.INACTIVE,
   },
   validationSchema: createUserValidationSchema,
 });
@@ -173,7 +173,7 @@ const isUserActived = computed<boolean>({
   },
   set(isUserActived) {
     setValues({
-      state: isUserActived ? USER_STATE.ACTIVE : USER_STATE.UNACTIVE,
+      state: isUserActived ? USER_STATE.ACTIVE : USER_STATE.INACTIVE,
     });
   },
 });
@@ -196,7 +196,7 @@ watch(isDialogShown, (isDialogShown: boolean) => {
       firstName: props.value?.firstName ?? "",
       phoneNumber: props.value?.phoneNumber ?? "",
       phoneRegion: props.value?.phoneRegion ?? "84",
-      state: props.value?.state ?? USER_STATE.UNACTIVE,
+      state: props.value?.state ?? USER_STATE.INACTIVE,
     });
 
     emit("show");

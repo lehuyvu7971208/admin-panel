@@ -97,7 +97,7 @@ const isBusinessActive = computed<boolean>({
   },
   set(isBusinessActive) {
     setValues({
-      state: isBusinessActive ? BUSINESS_STATE.ACTIVE : BUSINESS_STATE.UNACTIVE,
+      state: isBusinessActive ? BUSINESS_STATE.ACTIVE : BUSINESS_STATE.INACTIVE,
     });
   },
 });

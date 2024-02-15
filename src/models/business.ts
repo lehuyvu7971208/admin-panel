@@ -7,7 +7,7 @@ import User from "./user";
 
 export enum BusinessState {
   Active = "active",
-  UnActive = "unActive",
+  InActive = "inActive",
 }
 
 export enum BusinessType {
@@ -28,7 +28,7 @@ export default class Business extends Model {
   user: User = new User();
 
   @Expose() type: BusinessType = BusinessType.None;
-  @Expose() state: BusinessState = BusinessState.UnActive;
+  @Expose() state: BusinessState = BusinessState.InActive;
 
   @Expose() createdDate: Date | null = null;
   @Expose() updatedDate: Date | null = null;

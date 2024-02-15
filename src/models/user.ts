@@ -4,7 +4,7 @@ import { Expose } from "class-transformer";
 
 export enum UserState {
   Active = "active",
-  UnActive = "unActive",
+  InActive = "inActive",
 }
 
 export default class User extends Model {
@@ -12,7 +12,7 @@ export default class User extends Model {
   @Expose() email: string = "";
   @Expose() username: string = "";
   @Expose() password: string = "";
-  @Expose() state: UserState = UserState.UnActive;
+  @Expose() state: UserState = UserState.InActive;
 
   @Expose() lastName: string = "";
   @Expose() firstName: string = "";
