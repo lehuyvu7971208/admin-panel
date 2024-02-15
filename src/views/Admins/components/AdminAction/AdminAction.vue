@@ -100,7 +100,7 @@ const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
     username: "",
     password: "",
     type: "manager",
-    state: ADMIN_STATE.UNACTIVE,
+    state: ADMIN_STATE.INACTIVE,
   },
   validationSchema: createAdminValidationSchema,
 });
@@ -120,7 +120,7 @@ const isAdminActive = computed<boolean>({
 
   set(isAdminActive) {
     setValues({
-      state: isAdminActive ? ADMIN_STATE.ACTIVE : ADMIN_STATE.UNACTIVE,
+      state: isAdminActive ? ADMIN_STATE.ACTIVE : ADMIN_STATE.INACTIVE,
     });
   },
 });

@@ -4,7 +4,7 @@ import { Expose } from "class-transformer";
 
 export enum AdminState {
   Active = "active",
-  UnActive = "unActive",
+  InActive = "inActive",
 }
 
 export enum AdminRole {
@@ -17,7 +17,7 @@ export default class Admin extends Model {
   @Expose() username: string = "";
   @Expose() password: string = "";
   @Expose() type: AdminRole = AdminRole.Admin;
-  @Expose() state: AdminState = AdminState.UnActive;
+  @Expose() state: AdminState = AdminState.InActive;
 
   @Expose() createdDate: Date | null = null;
   @Expose() updatedDate: Date | null = null;

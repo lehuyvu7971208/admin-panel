@@ -1,12 +1,12 @@
 export const BUSINESS_STATE = {
   ACTIVE: "active",
-  UNACTIVE: "unActive",
+  INACTIVE: "inActive",
 };
 
 export const BUSINESS_STATE_OPTIONS = [
   { title: "None", value: "" },
   { title: "Active", value: BUSINESS_STATE.ACTIVE },
-  { title: "Un-active", value: BUSINESS_STATE.UNACTIVE },
+  { title: "Un-active", value: BUSINESS_STATE.INACTIVE },
 ];
 
 export const BUSINESS_TYPE = {

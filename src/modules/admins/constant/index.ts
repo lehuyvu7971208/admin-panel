@@ -1,12 +1,12 @@
 export const ADMIN_STATE = {
   ACTIVE: "active",
-  UNACTIVE: "unActive",
+  INACTIVE: "inActive",
 };
 
 export const ADMIN_STATE_OPTIONS = [
   { title: "None", value: "" },
   { title: "Active", value: ADMIN_STATE.ACTIVE },
-  { title: "Un-active", value: ADMIN_STATE.UNACTIVE },
+  { title: "Inactive", value: ADMIN_STATE.INACTIVE },
 ];
 
 export const ADMIN_ROLE = {
