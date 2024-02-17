@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     beforeEnter: [loadAuthInfo],
-    component: () => import(/* webpackChunkName: "layout" */ "@/layouts/Full/FullLayout.vue"),
+    component: () => import(/* webpackChunkName: "layout" */ "frontend/Layout/FullLayout.vue"),
     children: [
       {
         path: "/",

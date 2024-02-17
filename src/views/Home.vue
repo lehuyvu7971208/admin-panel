@@ -17,6 +17,7 @@ import UiParentCard from '@/components/shared/UiParentCard/UiParentCard.vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue';
 
 const page = ref({ title: 'Sample Page' });
+
 const breadcrumbs = ref([
   {
     text: 'Dashboard',

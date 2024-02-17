@@ -52,8 +52,9 @@ import AdminFiltered from "./components/AdminFiltered/AdminFiltered.vue";
 import AdminAction, { AdminActionExpose } from "./components/AdminAction/AdminAction.vue";
 
 // Shared Components
-import Pagination from "@/components/shared/Pagination/Pagination.vue";
-import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue";
+import Pagination from "frontend/Pagination.vue";
+import BaseBreadcrumb from "frontend/BaseBreadcrumb.vue";
+// import Pagination from "@/components/shared/Pagination/Pagination.vue";
 
 const dialog = useDialog();
 const adminActionRef = ref<AdminActionExpose>();
