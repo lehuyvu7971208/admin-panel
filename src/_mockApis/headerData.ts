@@ -1,6 +1,3 @@
-// project imports
-
-// 
 // Notification
 // 
 import user1 from '@/assets/images/profile/user-1.jpg';
@@ -9,7 +6,7 @@ import user3 from '@/assets/images/profile/user-3.jpg';
 import user4 from '@/assets/images/profile/user-4.jpg';
 import user5 from '@/assets/images/profile/user-5.jpg';
 
-const notifications:any[] = [
+const notifications: any[] = [
     {
         avatar: user1,
         title: 'Roman Joined the Team!',
