@@ -86,9 +86,13 @@ const { search, patch } = useSearch<FindAllAdminsParamsData>(filters.value);
 
 const loadAdminsByFilters = async (): Promise<void> => {
   try {
+    loading(true);
+
     await adminManagementStore.getAdmins(filters.value);
   } catch (error: any) {
     dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -104,9 +108,17 @@ const handlePaginationChange = (pagination: Pagination): void => {
 };
 
 const handleAdminEdit = async (id: number) => {
-  await adminManagementStore.getAdminById(id);
+  try {
+    loading(true);
 
-  adminActionRef.value?.show();
+    await adminManagementStore.getAdminById(id);
+
+    adminActionRef.value?.show();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 const handleAdminActionHide = () => {
