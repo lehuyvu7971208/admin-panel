@@ -7,5 +7,7 @@ declare module "*.vue" {
 }
 
 declare module "frontend/*" {
+  export = any;
+
   export default any;
 }

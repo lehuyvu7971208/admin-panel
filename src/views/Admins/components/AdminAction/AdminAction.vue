@@ -59,10 +59,10 @@ import { ref, watch, computed } from "vue";
 // Models
 import Admin from "@/models/admin";
 
-// Components shared
-import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
-import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
-import VPasswordValidateField from "@/components/shared/VPasswordValidateField/VPasswordValidateField.vue";
+// Remote Components
+import VSelectValidate from "frontend/VSelectValidate.vue";
+import VTextValidateField from "frontend/VTextValidateField.vue";
+import VPasswordValidateField from "frontend/VPasswordValidateField.vue";
 
 // Validation
 import { createAdminValidationSchema } from "@/libs/validation/admin";

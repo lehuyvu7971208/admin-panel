@@ -70,9 +70,9 @@
 import { useForm } from "vee-validate";
 
 // Components
-import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
-import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
-import VPasswordValidateField from "@/components/shared/VPasswordValidateField/VPasswordValidateField.vue";
+import VSelectValidate from "frontend/VSelectValidate.vue";
+import VTextValidateField from "frontend/VTextValidateField.vue";
+import VPasswordValidateField from "frontend/VPasswordValidateField.vue";
 
 // Validation
 import { createUserValidationSchema } from "@/libs/validation/user";

@@ -62,10 +62,10 @@ import { useForm } from "vee-validate";
 // Apis
 import { FindAllBusinessesParamsData } from "@/modules/businesses/api/businesses";
 
-// Components Shared
-import VSwitchValidate from "@/components/shared/VSwitchValidate/VSwitchValidate.vue";
-import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
-import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
+// Remote Components
+import VSwitchValidate from "frontend/VSwitchValidate.vue";
+import VSelectValidate from "frontend/VSelectValidate.vue";
+import VTextValidateField from "frontend/VTextValidateField.vue";
 
 // Constants
 import { BUSINESS_STATE_OPTIONS, BUSINESS_TYPE_OPTIONS } from "@/modules/businesses/constant";

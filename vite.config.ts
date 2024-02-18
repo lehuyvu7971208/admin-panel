@@ -22,7 +22,7 @@ export default defineConfig({
     federation({
       name: "admin-panel",
       remotes: {
-        frontend: "http://localhost:8081/assets/remoteEntry.js",
+        frontend: "http://localhost:8000/assets/remoteEntry.js",
       },
       shared: ["vue", "pinia", "vuetify", "vue-router"],
     }),
