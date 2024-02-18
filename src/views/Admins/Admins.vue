@@ -33,8 +33,10 @@
 <script lang="ts" setup>
 // Utilities
 import { ref, computed } from "vue";
-import { useDialog } from "@/modules/dialog/utils";
 import { onSearch, useSearch } from "@/libs/utils/search";
+
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
 
 // Models
 import Admin from "@/models/admin";
@@ -51,12 +53,11 @@ import AdminFilters from "./components/AdminFilters/AdminFilters.vue";
 import AdminFiltered from "./components/AdminFiltered/AdminFiltered.vue";
 import AdminAction, { AdminActionExpose } from "./components/AdminAction/AdminAction.vue";
 
-// Shared Components
+// Remote Components
 import Pagination from "frontend/Pagination.vue";
 import BaseBreadcrumb from "frontend/BaseBreadcrumb.vue";
-// import Pagination from "@/components/shared/Pagination/Pagination.vue";
 
-const dialog = useDialog();
+const dialog = Dialog.useDialog();
 const adminActionRef = ref<AdminActionExpose>();
 const adminManagementStore = useAdminManagementStore();
 
@@ -83,8 +84,8 @@ const { search, patch } = useSearch<FindAllAdminsParamsData>(filters.value);
 const loadAdminsByFilters = async (): Promise<void> => {
   try {
     await adminManagementStore.getAdmins(filters.value);
-  } catch (error) {
-    //
+  } catch (error: any) {
+    dialog.error(error.message);
   }
 };
 
@@ -110,22 +111,26 @@ const handleAdminActionHide = () => {
 };
 
 const handleAdminActionSubmit = async (value: any) => {
-  const admin = Admin.build(value) as Admin;
-  await adminManagementStore.setAdmin(admin);
+  try {
+    const admin = Admin.build(value) as Admin;
+    await adminManagementStore.setAdmin(admin);
 
-  if (!admin.id) {
-    await adminManagementStore.saveAdmin();
-  } else {
-    await adminManagementStore.updateAdmin();
+    if (!admin.id) {
+      await adminManagementStore.saveAdmin();
+    } else {
+      await adminManagementStore.updateAdmin();
+    }
+
+    adminActionRef.value?.hide();
+
+    loadAdminsByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
   }
-
-  adminActionRef.value?.hide();
-
-  loadAdminsByFilters();
 };
 
 const handleAdminDelete = async (id: number) => {
-  dialog.addDialogConfirm({
+  dialog.confirm({
     title: "Warning",
     text: "Are you sure to want to delete this user?",
 

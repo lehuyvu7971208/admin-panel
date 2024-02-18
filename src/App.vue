@@ -14,13 +14,17 @@
 // Utilities
 import { computed } from "vue";
 
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
+
 // Components
 import Http from "@/modules/http/components/Http/Http.vue";
-import Dialogs from "@/modules/dialog/components/Dialogs/Dialogs.vue";
 import Snackbars from "@/modules/snackbar/components/Snackbars/Snackbars.vue";
 
 // Stores
 import { useCustomizerStore } from "@/store/customizer";
+
+const Dialogs = Dialog.Dialogs;
 
 const customizer = useCustomizerStore();
 
