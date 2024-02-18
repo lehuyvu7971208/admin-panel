@@ -13,8 +13,8 @@
 import { ref} from 'vue';
 
 // Components
-import UiParentCard from '@/components/shared/UiParentCard/UiParentCard.vue';
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue';
+import UiParentCard from 'frontend/UiParentCard.vue';
+import BaseBreadcrumb from 'frontend/BaseBreadcrumb.vue';
 
 const page = ref({ title: 'Sample Page' });
 
