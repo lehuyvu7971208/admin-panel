@@ -37,6 +37,7 @@ import { onSearch, useSearch } from "@/libs/utils/search";
 
 // Remote Utilities
 import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
 
 // Components
 import BusinessTable from "./components/BusinessTable/BusinessTable.vue";
@@ -58,6 +59,8 @@ import { FindAllBusinessesParamsData } from "@/modules/businesses/api/businesses
 import { useBusinessManagementStore } from "./store/businessManagement";
 
 const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
+
 const businessActionRef = ref<BusinessActionExpose>();
 const businessManagementStore = useBusinessManagementStore();
 
@@ -83,9 +86,13 @@ const { search, patch } = useSearch<FindAllBusinessesParamsData>(filters.value);
 
 const loadBusinessesByFilters = async (): Promise<void> => {
   try {
+    loading(true);
+
     await businessManagementStore.getBusinesses(filters.value);
   } catch (error: any) {
     dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -112,6 +119,8 @@ const handleBusinessActionHide = () => {
 
 const handleBusinessActionSubmit = async (values: any): Promise<void> => {
   try {
+    loading(true);
+
     const business = Business.build(values) as Business;
     businessManagementStore.setBusiness(business);
 
@@ -126,6 +135,8 @@ const handleBusinessActionSubmit = async (values: any): Promise<void> => {
     loadBusinessesByFilters();
   } catch (error: any) {
     dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -139,9 +150,17 @@ const handleBusinessDelete = async (id: number): Promise<void> => {
 };
 
 const handleDeleteBusinessAgreed = async (id: number): Promise<void> => {
-  await businessManagementStore.deleteBusiness(id);
+  try {
+    loading(true);
 
-  loadBusinessesByFilters();
+    await businessManagementStore.deleteBusiness(id);
+
+    loadBusinessesByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 onSearch<FindAllBusinessesParamsData>(async (query) => {

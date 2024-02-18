@@ -37,6 +37,7 @@ import { onSearch, useSearch } from "@/libs/utils/search";
 
 // Remote Utilities
 import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
 
 // Models
 import Admin from "@/models/admin";
@@ -58,6 +59,8 @@ import Pagination from "frontend/Pagination.vue";
 import BaseBreadcrumb from "frontend/BaseBreadcrumb.vue";
 
 const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
+
 const adminActionRef = ref<AdminActionExpose>();
 const adminManagementStore = useAdminManagementStore();
 
@@ -112,6 +115,8 @@ const handleAdminActionHide = () => {
 
 const handleAdminActionSubmit = async (value: any) => {
   try {
+    loading(true);
+
     const admin = Admin.build(value) as Admin;
     await adminManagementStore.setAdmin(admin);
 
@@ -126,6 +131,8 @@ const handleAdminActionSubmit = async (value: any) => {
     loadAdminsByFilters();
   } catch (error: any) {
     dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -139,9 +146,17 @@ const handleAdminDelete = async (id: number) => {
 };
 
 const handleDeleteAdminAgreed = async (id: number) => {
-  await adminManagementStore.deleteAdmin(id);
+  try {
+    loading(true);
 
-  loadAdminsByFilters();
+    await adminManagementStore.deleteAdmin(id);
+
+    loadAdminsByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 onSearch<FindAllAdminsParamsData>(async (query) => {

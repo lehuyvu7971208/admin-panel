@@ -37,6 +37,7 @@ import { onSearch, useSearch } from "@/libs/utils/search";
 
 // Remote Utilities
 import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
 
 // Components
 import UserTable from "./components/UserTable/UserTable.vue";
@@ -58,6 +59,8 @@ import { FindAllUsersParamsData } from "@/modules/users/api/users";
 import { useUserManagementStore } from "./store/userManagement";
 
 const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
+
 const userActionRef = ref<UserFormExpose>();
 const userManagementStore = useUserManagementStore();
 
@@ -83,9 +86,13 @@ const { search, patch } = useSearch<FindAllUsersParamsData>(filters.value);
 
 const loadUserByFilters = async (): Promise<void> => {
   try {
+    loading(true);
+
     await userManagementStore.getUsers(filters.value);
   } catch (error: any) {
     dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -127,6 +134,8 @@ const handleDeleteUserAgreed = async (id: number): Promise<void> => {
 
 const handleUserActionSubmmit = async (data: any) => {
   try {
+    loading(true);
+
     const user = User.build(data) as User;
     await userManagementStore.setUser(user);
 
@@ -141,6 +150,8 @@ const handleUserActionSubmmit = async (data: any) => {
     loadUserByFilters();
   } catch (error: any) {
     dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 

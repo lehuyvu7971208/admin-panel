@@ -6,6 +6,8 @@
 
     <dialogs />
 
+    <loading />
+
     <snackbars />
   </v-app>
 </template>
@@ -16,6 +18,7 @@ import { computed } from "vue";
 
 // Remote Utilities
 import Dialog from "frontend/Modules/Dialog.js";
+import LoadingIndicator from "frontend/Modules/Loading.js";
 
 // Components
 import Http from "@/modules/http/components/Http/Http.vue";
@@ -25,6 +28,7 @@ import Snackbars from "@/modules/snackbar/components/Snackbars/Snackbars.vue";
 import { useCustomizerStore } from "@/store/customizer";
 
 const Dialogs = Dialog.Dialogs;
+const Loading = LoadingIndicator.Loading;
 
 const customizer = useCustomizerStore();
 
