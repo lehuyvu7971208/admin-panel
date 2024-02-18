@@ -33,8 +33,11 @@
 <script lang="ts" setup>
 // Utilities
 import { ref, computed } from "vue";
-import { useDialog } from "@/modules/dialog/utils";
 import { onSearch, useSearch } from "@/libs/utils/search";
+
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
 
 // Components
 import BusinessTable from "./components/BusinessTable/BusinessTable.vue";
@@ -42,9 +45,9 @@ import BusinessFilters from "./components/BusinessFilters/BusinessFilters.vue";
 import BusinessFiltered from "./components/BusinessFiltered/BusinessFiltered.vue";
 import BusinessAction, { BusinessActionExpose } from "./components/BusinessAction/BusinessAction.vue";
 
-// Shared Components
-import Pagination from "@/components/shared/Pagination/Pagination.vue";
-import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue";
+// Remote Components
+import Pagination from "frontend/Pagination.vue";
+import BaseBreadcrumb from "frontend/BaseBreadcrumb.vue";
 
 // Models
 import Business from "@/models/business";
@@ -55,7 +58,9 @@ import { FindAllBusinessesParamsData } from "@/modules/businesses/api/businesses
 // Store
 import { useBusinessManagementStore } from "./store/businessManagement";
 
-const dialog = useDialog();
+const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
+
 const businessActionRef = ref<BusinessActionExpose>();
 const businessManagementStore = useBusinessManagementStore();
 
@@ -81,9 +86,13 @@ const { search, patch } = useSearch<FindAllBusinessesParamsData>(filters.value);
 
 const loadBusinessesByFilters = async (): Promise<void> => {
   try {
+    loading(true);
+
     await businessManagementStore.getBusinesses(filters.value);
-  } catch (error) {
-    //
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -109,22 +118,30 @@ const handleBusinessActionHide = () => {
 };
 
 const handleBusinessActionSubmit = async (values: any): Promise<void> => {
-  const business = Business.build(values) as Business;
-  businessManagementStore.setBusiness(business);
+  try {
+    loading(true);
 
-  if (business.id) {
-    await businessManagementStore.updateBusiness();
-  } else {
-    await businessManagementStore.saveBusiness();
+    const business = Business.build(values) as Business;
+    businessManagementStore.setBusiness(business);
+
+    if (business.id) {
+      await businessManagementStore.updateBusiness();
+    } else {
+      await businessManagementStore.saveBusiness();
+    }
+
+    businessActionRef.value?.hide();
+
+    loadBusinessesByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
   }
-
-  businessActionRef.value?.hide();
-
-  loadBusinessesByFilters();
 };
 
 const handleBusinessDelete = async (id: number): Promise<void> => {
-  dialog.addDialogConfirm({
+  dialog.confirm({
     title: "Warning",
     text: "Are you sure to want to delete this business?",
 
@@ -133,9 +150,17 @@ const handleBusinessDelete = async (id: number): Promise<void> => {
 };
 
 const handleDeleteBusinessAgreed = async (id: number): Promise<void> => {
-  await businessManagementStore.deleteBusiness(id);
+  try {
+    loading(true);
 
-  loadBusinessesByFilters();
+    await businessManagementStore.deleteBusiness(id);
+
+    loadBusinessesByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 onSearch<FindAllBusinessesParamsData>(async (query) => {

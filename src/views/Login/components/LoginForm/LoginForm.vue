@@ -55,7 +55,7 @@
 import { ref } from "vue";
 
 // Components
-import Logo from "@/layouts/Full/Logo/LogoDark.vue";
+import Logo from "frontend/Layout/FullLayout/Logo/LogoDark.vue";
 
 type LoginFormProps = {
   isSubmitting: boolean;

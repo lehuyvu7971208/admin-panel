@@ -1,4 +1,8 @@
-import { UserSearchIcon, UserCogIcon, BuildingStoreIcon } from "vue-tabler-icons";
+import {
+  UserCogIcon,
+  UserSearchIcon,
+  BuildingStoreIcon,
+} from "vue-tabler-icons";
 
 export interface menu {
   icon?: any;
@@ -33,10 +37,10 @@ const sidebarItem: menu[] = [
   },
 
   {
-    title: 'Businesses',
+    title: "Businesses",
     icon: BuildingStoreIcon,
-    to: "/business/management"
-  }
+    to: "/business/management",
+  },
 ];
 
 export default sidebarItem;

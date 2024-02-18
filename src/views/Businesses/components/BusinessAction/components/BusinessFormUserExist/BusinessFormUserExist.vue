@@ -87,11 +87,18 @@
 // Utilities
 import { ref, watch, computed } from "vue";
 
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
+
 // Components
 import { MailIcon, PhoneIcon } from "vue-tabler-icons";
 
 // Store
 import { useBusinessActionStore } from "../../store/businessAction";
+
+const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
 
 export type BusinessFormUserExistEvents = {
   (event: "cancel"): void;
@@ -130,6 +137,18 @@ const handleFormSubmit = (event: Event) => {
   emit("submit", selectedUser.value);
 };
 
+const loadSearchUsers = async () => {
+  try {
+    loading(true);
+
+    await businessActionStore.getSearchUsers();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
+};
+
 let loadUserTimeout: any = null;
 watch(
   () => keyword.value,
@@ -137,7 +156,7 @@ watch(
     if (!keyword) return;
 
     clearTimeout(loadUserTimeout);
-    loadUserTimeout = setTimeout(() => businessActionStore.getSearchUsers(), 800);
+    loadUserTimeout = setTimeout(async () => loadSearchUsers(), 600);
   }
 );
 </script>

@@ -63,6 +63,10 @@
 // Utilities
 import { ref, computed } from "vue";
 
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
+
 // Models
 import User from "@/models/user";
 import Business from "@/models/business";
@@ -73,6 +77,9 @@ import UserAction, { UserFormExpose } from "@/views/Users/components/UserAction/
 
 // Store
 import { useBusinessActionStore } from "../../store/businessAction";
+
+const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
 
 const userActionRef = ref<UserFormExpose>();
 const businessActionStore = useBusinessActionStore();
@@ -94,14 +101,22 @@ const handleUserEdit = async () => {
 };
 
 const handleUserActionSubmit = async (data: any) => {
-  const user = User.build(data) as User;
-  await businessActionStore.setUser(user);
+  try {
+    loading(true);
 
-  await businessActionStore.updateUser();
+    const user = User.build(data) as User;
+    await businessActionStore.setUser(user);
 
-  await businessActionStore.getBusinessById(business.value.id);
+    await businessActionStore.updateUser();
 
-  userActionRef.value?.hide();
+    await businessActionStore.getBusinessById(business.value.id);
+
+    userActionRef.value?.hide();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 const handleDetailFormSubmit = async (values: any) => {

@@ -7,7 +7,7 @@
 import { computed } from "vue";
 
 // Components
-import Filtered from "@/components/shared/Filtered/Filtered.vue";
+import Filtered from "frontend/Filtered.vue";
 
 // Types
 import { FindAllAdminsParamsData } from "@/modules/admins/api/admins";

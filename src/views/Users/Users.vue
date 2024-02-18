@@ -33,8 +33,11 @@
 <script lang="ts" setup>
 // Utilities
 import { ref, computed } from "vue";
-import { useDialog } from "@/modules/dialog/utils";
 import { onSearch, useSearch } from "@/libs/utils/search";
+
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
 
 // Components
 import UserTable from "./components/UserTable/UserTable.vue";
@@ -42,9 +45,9 @@ import UserFilters from "./components/UserFilters/UserFilters.vue";
 import UserFiltered from "./components/UserFiltered/UserFiltered.vue";
 import UserAction, { UserFormExpose } from "./components/UserAction/UserAction.vue";
 
-// Shared Components
-import Pagination from "@/components/shared/Pagination/Pagination.vue";
-import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue";
+// Remote Components
+import Pagination from "frontend/Pagination.vue";
+import BaseBreadcrumb from "frontend/BaseBreadcrumb.vue";
 
 // Models
 import User from "@/models/user";
@@ -55,7 +58,9 @@ import { FindAllUsersParamsData } from "@/modules/users/api/users";
 // Store
 import { useUserManagementStore } from "./store/userManagement";
 
-const dialog = useDialog();
+const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
+
 const userActionRef = ref<UserFormExpose>();
 const userManagementStore = useUserManagementStore();
 
@@ -81,9 +86,13 @@ const { search, patch } = useSearch<FindAllUsersParamsData>(filters.value);
 
 const loadUserByFilters = async (): Promise<void> => {
   try {
+    loading(true);
+
     await userManagementStore.getUsers(filters.value);
-  } catch (error) {
-    //
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -109,7 +118,7 @@ const handleUserEdit = async (id: number): Promise<void> => {
 };
 
 const handleUserDelete = async (id: number): Promise<void> => {
-  dialog.addDialogConfirm({
+  dialog.confirm({
     title: "Warning",
     text: "Are you sure to want to delete this user?",
 
@@ -124,18 +133,26 @@ const handleDeleteUserAgreed = async (id: number): Promise<void> => {
 };
 
 const handleUserActionSubmmit = async (data: any) => {
-  const user = User.build(data) as User;
-  await userManagementStore.setUser(user);
+  try {
+    loading(true);
 
-  if (!user.id) {
-    await userManagementStore.saveUser();
-  } else {
-    await userManagementStore.updateUser();
+    const user = User.build(data) as User;
+    await userManagementStore.setUser(user);
+
+    if (!user.id) {
+      await userManagementStore.saveUser();
+    } else {
+      await userManagementStore.updateUser();
+    }
+
+    userActionRef.value?.hide();
+
+    loadUserByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
   }
-
-  userActionRef.value?.hide();
-
-  loadUserByFilters();
 };
 
 onSearch<FindAllUsersParamsData>(async (query) => {

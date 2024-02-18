@@ -33,8 +33,11 @@
 <script lang="ts" setup>
 // Utilities
 import { ref, computed } from "vue";
-import { useDialog } from "@/modules/dialog/utils";
 import { onSearch, useSearch } from "@/libs/utils/search";
+
+// Remote Utilities
+import Dialog from "frontend/Modules/Dialog.js";
+import Loading from "frontend/Modules/Loading.js";
 
 // Models
 import Admin from "@/models/admin";
@@ -51,11 +54,13 @@ import AdminFilters from "./components/AdminFilters/AdminFilters.vue";
 import AdminFiltered from "./components/AdminFiltered/AdminFiltered.vue";
 import AdminAction, { AdminActionExpose } from "./components/AdminAction/AdminAction.vue";
 
-// Shared Components
-import Pagination from "@/components/shared/Pagination/Pagination.vue";
-import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb/BaseBreadcrumb.vue";
+// Remote Components
+import Pagination from "frontend/Pagination.vue";
+import BaseBreadcrumb from "frontend/BaseBreadcrumb.vue";
 
-const dialog = useDialog();
+const dialog = Dialog.useDialog();
+const loading = Loading.useLoading();
+
 const adminActionRef = ref<AdminActionExpose>();
 const adminManagementStore = useAdminManagementStore();
 
@@ -81,9 +86,13 @@ const { search, patch } = useSearch<FindAllAdminsParamsData>(filters.value);
 
 const loadAdminsByFilters = async (): Promise<void> => {
   try {
+    loading(true);
+
     await adminManagementStore.getAdmins(filters.value);
-  } catch (error) {
-    //
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
   }
 };
 
@@ -99,9 +108,17 @@ const handlePaginationChange = (pagination: Pagination): void => {
 };
 
 const handleAdminEdit = async (id: number) => {
-  await adminManagementStore.getAdminById(id);
+  try {
+    loading(true);
 
-  adminActionRef.value?.show();
+    await adminManagementStore.getAdminById(id);
+
+    adminActionRef.value?.show();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 const handleAdminActionHide = () => {
@@ -109,22 +126,30 @@ const handleAdminActionHide = () => {
 };
 
 const handleAdminActionSubmit = async (value: any) => {
-  const admin = Admin.build(value) as Admin;
-  await adminManagementStore.setAdmin(admin);
+  try {
+    loading(true);
 
-  if (!admin.id) {
-    await adminManagementStore.saveAdmin();
-  } else {
-    await adminManagementStore.updateAdmin();
+    const admin = Admin.build(value) as Admin;
+    await adminManagementStore.setAdmin(admin);
+
+    if (!admin.id) {
+      await adminManagementStore.saveAdmin();
+    } else {
+      await adminManagementStore.updateAdmin();
+    }
+
+    adminActionRef.value?.hide();
+
+    loadAdminsByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
   }
-
-  adminActionRef.value?.hide();
-
-  loadAdminsByFilters();
 };
 
 const handleAdminDelete = async (id: number) => {
-  dialog.addDialogConfirm({
+  dialog.confirm({
     title: "Warning",
     text: "Are you sure to want to delete this user?",
 
@@ -133,9 +158,17 @@ const handleAdminDelete = async (id: number) => {
 };
 
 const handleDeleteAdminAgreed = async (id: number) => {
-  await adminManagementStore.deleteAdmin(id);
+  try {
+    loading(true);
 
-  loadAdminsByFilters();
+    await adminManagementStore.deleteAdmin(id);
+
+    loadAdminsByFilters();
+  } catch (error: any) {
+    dialog.error(error.message);
+  } finally {
+    loading(false);
+  }
 };
 
 onSearch<FindAllAdminsParamsData>(async (query) => {

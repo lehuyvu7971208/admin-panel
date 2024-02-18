@@ -56,9 +56,9 @@ import { useForm } from "vee-validate";
 // Models
 import Business from "@/models/business";
 
-// Components shared
-import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
-import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
+// Remote Components
+import VSelectValidate from "frontend/VSelectValidate.vue";
+import VTextValidateField from "frontend/VTextValidateField.vue";
 
 // Validation
 import { createBusinessValidationSchema } from "@/libs/validation/business";

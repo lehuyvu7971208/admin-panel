@@ -49,10 +49,10 @@ import * as Yup from "yup";
 import { watch } from "vue";
 import { useForm } from "vee-validate";
 
-// Components Shared
-import VSwitchValidate from "@/components/shared/VSwitchValidate/VSwitchValidate.vue";
-import VSelectValidate from "@/components/shared/VSelectValidate/VSelectValidate.vue";
-import VTextValidateField from "@/components/shared/VTextValidateField/VTextValidateField.vue";
+// Remote Components
+import VSwitchValidate from "frontend/VSwitchValidate.vue";
+import VSelectValidate from "frontend/VSelectValidate.vue";
+import VTextValidateField from "frontend/VTextValidateField.vue";
 
 // Apis
 import { FindAllAdminsParamsData } from "@/modules/admins/api/admins";
