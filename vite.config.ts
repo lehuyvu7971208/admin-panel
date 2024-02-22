@@ -24,7 +24,7 @@ export default defineConfig({
       remotes: {
         frontend: "http://localhost:8000/assets/remoteEntry.js",
       },
-      shared: ["vue", "pinia", "vuetify", "vue-router"],
+      shared: ["vue", "pinia", "vuetify", "vue-router", "vee-validate"],
     }),
   ],
 

@@ -144,7 +144,7 @@ export type UserActionEvents = {
 
 const emit = defineEmits<UserActionEvents>();
 
-const { values, handleSubmit, handleReset, setValues } = useForm<FormValues>({
+const { values, errors, handleSubmit, handleReset, setValues } = useForm<FormValues>({
   initialValues: {
     id: 0,
     email: "",
@@ -183,6 +183,8 @@ const handleCancelClick = () => {
 };
 
 const handleFormSubmit = handleSubmit((values) => {
+  console.log("at handleFormSubmit");
+
   emit("submit", values);
 });
 
@@ -204,6 +206,10 @@ watch(isDialogShown, (isDialogShown: boolean) => {
     emit("hide");
     handleReset();
   }
+});
+
+watch(errors, (errors) => {
+  console.log("errors", errors);
 });
 
 export type UserFormExpose = {

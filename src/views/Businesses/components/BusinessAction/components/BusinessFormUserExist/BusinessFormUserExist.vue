@@ -35,7 +35,7 @@
                 <td>
                   <div class="py-4">
                     <h4 class="text-h6">
-                      {{ user.firstname }} {{ user.lastname }}
+                      {{ user.firstName }} {{ user.lastName }}
                       <small>({{ user.username }})</small>
                     </h4>
                     <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ user.email }}</span>
@@ -46,7 +46,7 @@
                   <div class="py-4">
                     <span class="text-subtitle-1 d-block mt-1 textSecondary d-flex">
                       <phone-icon size="16" class="mr-2" />
-                      (+{{ user.phoneregion }}) {{ user.phonenumber }}
+                      (+{{ user.phoneRegion }}) {{ user.phoneNumber }}
                     </span>
 
                     <span class="text-subtitle-1 d-block mt-1 textSecondary d-flex">
