@@ -1,0 +1,8 @@
+.event-table {
+  .text-ellipsis {
+    overflow: hidden;
+    max-width: 150px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

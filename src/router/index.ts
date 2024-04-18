@@ -49,6 +49,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { authRequired: true },
         component: () => import(/* webpackChunkName: "business-management" */ "@/views/Businesses/Businesses.vue"),
       },
+      {
+        name: "events",
+        path: "/event/management",
+        meta: { authRequired: true },
+        component: () => import(/* webpackChunkName: "event-management" */ "@/views/Events/Events.vue"),
+      }
     ],
   },
 
