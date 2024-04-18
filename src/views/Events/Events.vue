@@ -5,7 +5,11 @@
 
   <v-row class="mb-3">
     <v-col>
-      <event-filters />
+      <event-filters :filter="filter" @submit="handleFilterChange">
+        <template #filtered>
+          <event-filtered :filter="filter" class="mt-6" @change="handleFilterChange" />
+        </template>  
+      </event-filters>
     </v-col>
   </v-row>
 
@@ -38,6 +42,7 @@
   // Components
   import EventTable from './components/EventTable/EventTable.vue';
   import EventFilters from './components/EventFilters/EventFilters.vue';
+  import EventFiltered from './components/EventFiltered/EventFiltered.vue';
   
   // APIs
   import { FindAllEventsParamsData } from '@/modules/events/api/events';
@@ -47,7 +52,7 @@
 
   const dialog = Dialog.useDialog();
   const loading = Loading.useLoading();
-  const { patch } = useSearch();
+  const { patch, search } = useSearch();
 
   const eventManagementStore = useEventManagementStore();
 
@@ -65,7 +70,7 @@
   ]);
 
   const events = computed(() => eventManagementStore.events);
-  const filters = computed(() => eventManagementStore.filter);
+  const filter = computed(() => eventManagementStore.filter);
   const pagination = computed(() => eventManagementStore.pagination);
 
   const loadEventsByFilter = async (): Promise<void> => {
@@ -85,6 +90,10 @@
       limit: pagination.limit,
       offset: pagination.offset,
     });
+  };
+
+  const handleFilterChange = (filter: FindAllEventsParamsData): void => {
+    search(filter);
   };
 
   onSearch<FindAllEventsParamsData>(async (query) => {

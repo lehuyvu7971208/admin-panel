@@ -2,12 +2,12 @@
   <v-table class="event-table mb-3" density="comfortable">
     <thead>
       <tr>
-        <th class="text-subtitle-1 font-weight-semibold">ID</th>
-        <th class="text-subtitle-1 font-weight-semibold">Queue Name</th>
-        <th class="text-subtitle-1 font-weight-semibold">Process Name</th>
-        <th class="text-subtitle-1 font-weight-semibold">Data</th>
-        <th class="text-subtitle-1 font-weight-semibold">Exception</th>
-        <th class="text-subtitle-1 font-weight-semibold">State</th>
+        <th class="text-subtitle-1 font-weight-semibold text-center">ID</th>
+        <th class="text-subtitle-1 font-weight-semibold text-center">Queue Name</th>
+        <th class="text-subtitle-1 font-weight-semibold text-center">Process Name</th>
+        <th class="text-subtitle-1 font-weight-semibold text-center">Data</th>
+        <th class="text-subtitle-1 font-weight-semibold text-center">Exception</th>
+        <th class="text-subtitle-1 font-weight-semibold text-center">State</th>
       </tr>
     </thead>
 
@@ -19,9 +19,9 @@
         >
           <td class="text-subtitle-1 text-center">#{{ event.id }}</td>
 
-          <td class="text-subtitle-1">{{ event.queueName }}</td>
+          <td class="text-subtitle-1 text-center">{{ event.queueName }}</td>
 
-          <td class="text-subtitle-1">{{ event.processName }}</td>
+          <td class="text-subtitle-1 text-center">{{ event.processName }}</td>
 
           <td class="text-subtitle-1 text-ellipsis">
             {{ event.data }}
@@ -43,7 +43,7 @@
             </v-tooltip>
           </td>
 
-          <td>
+          <td class="d-flex justify-center align-center">
             <v-chip
               variant="tonal"
               :color="getStateColor(event.state)"
