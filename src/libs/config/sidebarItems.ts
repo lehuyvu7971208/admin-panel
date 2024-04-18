@@ -2,6 +2,7 @@ import {
   UserCogIcon,
   UserSearchIcon,
   BuildingStoreIcon,
+  ArrowsExchangeIcon,
 } from "vue-tabler-icons";
 
 export interface menu {
@@ -41,6 +42,12 @@ const sidebarItem: menu[] = [
     icon: BuildingStoreIcon,
     to: "/business/management",
   },
+
+  {
+    title: "Events",
+    icon: ArrowsExchangeIcon,
+    to: "/event/management",
+  }
 ];
 
 export default sidebarItem;
